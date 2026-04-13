@@ -134,3 +134,6 @@ alpr_data/threshold_analysis/alpr_location_detections.csv
 
 # Nested standalone repo (managed separately)
 philly_surveillance_feb/
+
+# Local thesis / presentation (large binary)
+thesis_update_presentation.pptx
