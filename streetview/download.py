@@ -124,7 +124,7 @@ class ParallelSVImageDownloader:
 
 
 def download_streetview_image(key, sec):
-    df = pd.read_csv("data/meta.csv")
+    df = pd.read_csv("data/input_metadata/meta.csv")
     downloader = ParallelSVImageDownloader(key_to_sec=[(key, sec)], 
-                                           save_dir="./data/image")
+                                           save_dir="./data/rawdata/image")
     downloader.download(df)

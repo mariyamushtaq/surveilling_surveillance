@@ -66,7 +66,7 @@ Our collected camera annotations can be downloaded as follows:
 | 3,155    | 1,696      | [download](https://storage.googleapis.com/scpl-surveillance/meta.csv) | `b2340143c6af2d1e6bfefd5001fd94c1` |
 
 - *2021-5-20: This dataset is larger than the one reported in the paper as we include verified examples from our pilot.*
-- *2021-5-18: The metadata can also be found in this repo as `./data/meta.csv`*. 
+- *2021-5-18: The metadata can also be found in this repo as `./data/input_metadata/meta.csv`*. 
 
 ### Pre-trained Models
 

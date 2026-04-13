@@ -1,0 +1,65 @@
+panoid,heading,image,det_image,det_index,class,class_id,score,bbox,is_correct,notes
+4fc2ZVKpb5iBnc1lNItdPg,0,4fc2ZVKpb5iBnc1lNItdPg_0.jpg,4fc2ZVKpb5iBnc1lNItdPg_0_det.jpg,0,Dome Camera,1,0.578315,"[298, 194, 317, 213]",1.0,
+4fc2ZVKpb5iBnc1lNItdPg,180,4fc2ZVKpb5iBnc1lNItdPg_180.jpg,4fc2ZVKpb5iBnc1lNItdPg_180_det.jpg,0,Dome Camera,1,0.150807,"[157, 45, 172, 57]",0.0,thats an aeroplane 
+4fc2ZVKpb5iBnc1lNItdPg,270,4fc2ZVKpb5iBnc1lNItdPg_270.jpg,4fc2ZVKpb5iBnc1lNItdPg_270_det.jpg,0,Dome Camera,1,0.167309,"[34, 274, 40, 281]",0.0,
+4fc2ZVKpb5iBnc1lNItdPg,90,4fc2ZVKpb5iBnc1lNItdPg_90.jpg,4fc2ZVKpb5iBnc1lNItdPg_90_det.jpg,0,Dome Camera,1,0.886925,"[275, 244, 290, 252]",0.0,
+4fc2ZVKpb5iBnc1lNItdPg,90,4fc2ZVKpb5iBnc1lNItdPg_90.jpg,4fc2ZVKpb5iBnc1lNItdPg_90_det.jpg,1,Dome Camera,1,0.108813,"[273, 244, 283, 252]",1.0,im gonna put this as correct but im not super all the pictures of this batch might just be street lights
+5SQSUEFJqAGBB7OO1fGlpQ,90,5SQSUEFJqAGBB7OO1fGlpQ_90.jpg,5SQSUEFJqAGBB7OO1fGlpQ_90_det.jpg,0,Dome Camera,1,0.418857,"[137, 130, 149, 153]",0.0,
+5SQSUEFJqAGBB7OO1fGlpQ,90,5SQSUEFJqAGBB7OO1fGlpQ_90.jpg,5SQSUEFJqAGBB7OO1fGlpQ_90_det.jpg,1,Dome Camera,1,0.075952,"[137, 134, 144, 153]",0.0,
+5ZDTADmw80bfCabsSja9YA,180,5ZDTADmw80bfCabsSja9YA_180.jpg,5ZDTADmw80bfCabsSja9YA_180_det.jpg,0,Directed Camera,0,0.200141,"[465, 89, 485, 120]",1.0,this could be just a light by itself but shape is similar to alpr plate
+BbzfqpLXP6DGK5XHPycJjQ,270,BbzfqpLXP6DGK5XHPycJjQ_270.jpg,BbzfqpLXP6DGK5XHPycJjQ_270_det.jpg,0,Dome Camera,1,0.187615,"[324, 166, 340, 179]",1.0,
+BkO5rr9rv1brYkIXsqateg,270,BkO5rr9rv1brYkIXsqateg_270.jpg,BkO5rr9rv1brYkIXsqateg_270_det.jpg,0,Dome Camera,1,0.388817,"[432, 247, 436, 254]",1.0,
+GV1m563_Mp37U2YPZvNqFA,90,GV1m563_Mp37U2YPZvNqFA_90.jpg,GV1m563_Mp37U2YPZvNqFA_90_det.jpg,0,Dome Camera,1,0.403508,"[470, 250, 480, 255]",0.0,
+H9VEd7RXJA28LCvwkSC_3Q,0,H9VEd7RXJA28LCvwkSC_3Q_0.jpg,H9VEd7RXJA28LCvwkSC_3Q_0_det.jpg,0,Directed Camera,0,0.969999,"[192, 162, 208, 170]",1.0,
+H9VEd7RXJA28LCvwkSC_3Q,0,H9VEd7RXJA28LCvwkSC_3Q_0.jpg,H9VEd7RXJA28LCvwkSC_3Q_0_det.jpg,1,Dome Camera,1,0.199853,"[574, 232, 578, 235]",1.0,but directed not dome
+JPtQTafvobrgI49HXGszsw,90,JPtQTafvobrgI49HXGszsw_90.jpg,JPtQTafvobrgI49HXGszsw_90_det.jpg,0,Dome Camera,1,0.081468,"[99, 221, 114, 228]",0.0,
+LmchcsKF6z3pL5MR7Nql7w,270,LmchcsKF6z3pL5MR7Nql7w_270.jpg,LmchcsKF6z3pL5MR7Nql7w_270_det.jpg,0,Directed Camera,0,0.555432,"[327, 239, 336, 247]",1.0,
+Ouf-LBbquy9SUew6_qXSKg,270,Ouf-LBbquy9SUew6_qXSKg_270.jpg,Ouf-LBbquy9SUew6_qXSKg_270_det.jpg,0,Directed Camera,0,0.097238,"[117, 94, 135, 110]",0.0,
+Tqp-CZrQnh78bwOjSdbo0A,90,Tqp-CZrQnh78bwOjSdbo0A_90.jpg,Tqp-CZrQnh78bwOjSdbo0A_90_det.jpg,0,Dome Camera,1,0.924039,"[279, 207, 289, 220]",0.0,but there is a camera in the image that was not detected
+UoXLYgwe2s1A7FW-buvqPg,0,UoXLYgwe2s1A7FW-buvqPg_0.jpg,UoXLYgwe2s1A7FW-buvqPg_0_det.jpg,0,Dome Camera,1,0.601371,"[199, 260, 204, 267]",1.0,
+UoXLYgwe2s1A7FW-buvqPg,0,UoXLYgwe2s1A7FW-buvqPg_0.jpg,UoXLYgwe2s1A7FW-buvqPg_0_det.jpg,1,Directed Camera,0,0.074087,"[387, 157, 400, 169]",0.0,
+Wh6TA8mK0grjMLprF11l-w,0,Wh6TA8mK0grjMLprF11l-w_0.jpg,Wh6TA8mK0grjMLprF11l-w_0_det.jpg,0,Dome Camera,1,0.781521,"[140, 106, 163, 121]",0.0,similar structure but is a streetlight though there may be a camera
+Wh6TA8mK0grjMLprF11l-w,0,Wh6TA8mK0grjMLprF11l-w_0.jpg,Wh6TA8mK0grjMLprF11l-w_0_det.jpg,1,Directed Camera,0,0.718576,"[12, 241, 18, 249]",0.0,similar structure but is a streetlight though there may be a camera
+Wh6TA8mK0grjMLprF11l-w,0,Wh6TA8mK0grjMLprF11l-w_0.jpg,Wh6TA8mK0grjMLprF11l-w_0_det.jpg,2,Dome Camera,1,0.209828,"[192, 122, 211, 133]",0.0,
+Wh6TA8mK0grjMLprF11l-w,0,Wh6TA8mK0grjMLprF11l-w_0.jpg,Wh6TA8mK0grjMLprF11l-w_0_det.jpg,3,Directed Camera,0,0.157024,"[14, 241, 20, 249]",0.0,
+Wh6TA8mK0grjMLprF11l-w,0,Wh6TA8mK0grjMLprF11l-w_0.jpg,Wh6TA8mK0grjMLprF11l-w_0_det.jpg,4,Directed Camera,0,0.076681,"[10, 241, 16, 249]",0.0,
+Wh6TA8mK0grjMLprF11l-w,270,Wh6TA8mK0grjMLprF11l-w_270.jpg,Wh6TA8mK0grjMLprF11l-w_270_det.jpg,0,Dome Camera,1,0.373878,"[624, 240, 634, 247]",0.0,
+Wh6TA8mK0grjMLprF11l-w,270,Wh6TA8mK0grjMLprF11l-w_270.jpg,Wh6TA8mK0grjMLprF11l-w_270_det.jpg,1,Dome Camera,1,0.359871,"[276, 189, 280, 196]",0.0,
+Wh6TA8mK0grjMLprF11l-w,270,Wh6TA8mK0grjMLprF11l-w_270.jpg,Wh6TA8mK0grjMLprF11l-w_270_det.jpg,2,Dome Camera,1,0.221786,"[615, 244, 624, 251]",0.0,
+Wh6TA8mK0grjMLprF11l-w,270,Wh6TA8mK0grjMLprF11l-w_270.jpg,Wh6TA8mK0grjMLprF11l-w_270_det.jpg,3,Dome Camera,1,0.084426,"[623, 241, 630, 248]",0.0,
+Wzm2IdjsJBPVH711YIe6yQ,180,Wzm2IdjsJBPVH711YIe6yQ_180.jpg,Wzm2IdjsJBPVH711YIe6yQ_180_det.jpg,0,Dome Camera,1,0.172562,"[342, 251, 347, 257]",1.0,
+ZNnFjaeNna3i9cHslb50lQ,90,ZNnFjaeNna3i9cHslb50lQ_90.jpg,ZNnFjaeNna3i9cHslb50lQ_90_det.jpg,0,Dome Camera,1,0.487651,"[614, 204, 626, 215]",0.0,
+_155sZkTOfIJch3YCuZHKA,270,_155sZkTOfIJch3YCuZHKA_270.jpg,_155sZkTOfIJch3YCuZHKA_270_det.jpg,0,Dome Camera,1,0.297992,"[174, 216, 187, 226]",1.0,
+_RuAUCiuglfF2EZZ0ZVXlA,270,_RuAUCiuglfF2EZZ0ZVXlA_270.jpg,_RuAUCiuglfF2EZZ0ZVXlA_270_det.jpg,0,Dome Camera,1,0.817736,"[532, 169, 544, 183]",0.0,very similar shape though
+_RuAUCiuglfF2EZZ0ZVXlA,270,_RuAUCiuglfF2EZZ0ZVXlA_270.jpg,_RuAUCiuglfF2EZZ0ZVXlA_270_det.jpg,1,Dome Camera,1,0.814606,"[186, 223, 197, 236]",1.0,
+_lLyzReuF3Pzj6njWW1DDA,180,_lLyzReuF3Pzj6njWW1DDA_180.jpg,_lLyzReuF3Pzj6njWW1DDA_180_det.jpg,0,Dome Camera,1,0.746562,"[133, 202, 144, 214]",1.0,
+c5Z4pvIoTQONkbzK7dH8SA,0,c5Z4pvIoTQONkbzK7dH8SA_0.jpg,c5Z4pvIoTQONkbzK7dH8SA_0_det.jpg,0,Dome Camera,1,0.630219,"[338, 120, 348, 129]",1.0,
+c5Z4pvIoTQONkbzK7dH8SA,0,c5Z4pvIoTQONkbzK7dH8SA_0.jpg,c5Z4pvIoTQONkbzK7dH8SA_0_det.jpg,1,Dome Camera,1,0.203457,"[333, 119, 345, 128]",1.0,maybe a streetlight but very likely could have camera on it
+c5Z4pvIoTQONkbzK7dH8SA,0,c5Z4pvIoTQONkbzK7dH8SA_0.jpg,c5Z4pvIoTQONkbzK7dH8SA_0_det.jpg,2,Dome Camera,1,0.092565,"[331, 121, 340, 129]",1.0,
+c5Z4pvIoTQONkbzK7dH8SA,270,c5Z4pvIoTQONkbzK7dH8SA_270.jpg,c5Z4pvIoTQONkbzK7dH8SA_270_det.jpg,0,Dome Camera,1,0.423349,"[431, 120, 439, 128]",1.0,
+eXG2-xAXtT-2SMxaJEfDCQ,90,eXG2-xAXtT-2SMxaJEfDCQ_90.jpg,eXG2-xAXtT-2SMxaJEfDCQ_90_det.jpg,0,Directed Camera,0,0.646629,"[201, 191, 208, 197]",1.0,
+f1sxZxuG19vP2NEzmi4WNw,90,f1sxZxuG19vP2NEzmi4WNw_90.jpg,f1sxZxuG19vP2NEzmi4WNw_90_det.jpg,0,Dome Camera,1,0.110196,"[37, 194, 45, 203]",1.0,
+fWmt1UL5KlshBr-uQF06QQ,270,fWmt1UL5KlshBr-uQF06QQ_270.jpg,fWmt1UL5KlshBr-uQF06QQ_270_det.jpg,0,Dome Camera,1,0.2842,"[94, 148, 111, 160]",1.0,
+gOUAwU9pZuj1rCHBLMFQ6g,0,gOUAwU9pZuj1rCHBLMFQ6g_0.jpg,gOUAwU9pZuj1rCHBLMFQ6g_0_det.jpg,0,Dome Camera,1,0.401009,"[130, 171, 137, 184]",1.0,
+gOUAwU9pZuj1rCHBLMFQ6g,270,gOUAwU9pZuj1rCHBLMFQ6g_270.jpg,gOUAwU9pZuj1rCHBLMFQ6g_270_det.jpg,0,Directed Camera,0,0.163423,"[53, 283, 69, 292]",0.0,similar shape though
+h_7h7zq5m0okgFYvG_eqWQ,0,h_7h7zq5m0okgFYvG_eqWQ_0.jpg,h_7h7zq5m0okgFYvG_eqWQ_0_det.jpg,0,Directed Camera,0,0.90064,"[107, 200, 131, 220]",1.0,
+h_7h7zq5m0okgFYvG_eqWQ,0,h_7h7zq5m0okgFYvG_eqWQ_0.jpg,h_7h7zq5m0okgFYvG_eqWQ_0_det.jpg,1,Directed Camera,0,0.221239,"[104, 202, 123, 217]",1.0,
+iPiAOPopP0Wvrlj4rs3Osw,180,iPiAOPopP0Wvrlj4rs3Osw_180.jpg,iPiAOPopP0Wvrlj4rs3Osw_180_det.jpg,0,Dome Camera,1,0.263344,"[151, 146, 162, 154]",1.0,
+iS4oU1f54MiMCTDeSpdVcA,0,iS4oU1f54MiMCTDeSpdVcA_0.jpg,iS4oU1f54MiMCTDeSpdVcA_0_det.jpg,0,Dome Camera,1,0.594085,"[131, 83, 140, 89]",0.0,thats an aeroplane 
+jEaEdHT4pk-sG9jOYSdU1A,90,jEaEdHT4pk-sG9jOYSdU1A_90.jpg,jEaEdHT4pk-sG9jOYSdU1A_90_det.jpg,0,Directed Camera,0,0.522469,"[53, 259, 63, 272]",1.0,
+jJ_JgJRP6tNnqrwnt9n8rA,0,jJ_JgJRP6tNnqrwnt9n8rA_0.jpg,jJ_JgJRP6tNnqrwnt9n8rA_0_det.jpg,0,Dome Camera,1,0.294184,"[157, 79, 175, 91]",1.0,the detection is on a thing that might be a streetlight but there is a camera in this photo that was not detected
+jJ_JgJRP6tNnqrwnt9n8rA,90,jJ_JgJRP6tNnqrwnt9n8rA_90.jpg,jJ_JgJRP6tNnqrwnt9n8rA_90_det.jpg,0,Dome Camera,1,0.079067,"[419, 145, 432, 151]",1.0,maybe a streetlight but very likely could have camera on it
+kHzSoUwB1nF3ifyyw5sLcA,270,kHzSoUwB1nF3ifyyw5sLcA_270.jpg,kHzSoUwB1nF3ifyyw5sLcA_270_det.jpg,0,Dome Camera,1,0.592084,"[439, 180, 448, 189]",1.0,
+kUrXrXVO06lbeEETw25EsA,270,kUrXrXVO06lbeEETw25EsA_270.jpg,kUrXrXVO06lbeEETw25EsA_270_det.jpg,0,Directed Camera,0,0.683131,"[438, 84, 449, 94]",0.0,thats an aeroplane 
+kgeV4_2WLTpXUbYGXy_bXg,180,kgeV4_2WLTpXUbYGXy_bXg_180.jpg,kgeV4_2WLTpXUbYGXy_bXg_180_det.jpg,0,Dome Camera,1,0.104879,"[418, 263, 423, 273]",0.0,however there might be a camera in the picture
+kgeV4_2WLTpXUbYGXy_bXg,270,kgeV4_2WLTpXUbYGXy_bXg_270.jpg,kgeV4_2WLTpXUbYGXy_bXg_270_det.jpg,0,Dome Camera,1,0.069355,"[572, 184, 585, 194]",1.0,probably attached to the streetlight and directed 
+l1g9Haq6t21YqwTZk5qljg,270,l1g9Haq6t21YqwTZk5qljg_270.jpg,l1g9Haq6t21YqwTZk5qljg_270_det.jpg,0,Directed Camera,0,0.219845,"[523, 282, 538, 294]",1.0,
+l8qFotWjPe-nnw_RJfFv5g,180,l8qFotWjPe-nnw_RJfFv5g_180.jpg,l8qFotWjPe-nnw_RJfFv5g_180_det.jpg,0,Dome Camera,1,0.13302,"[456, 156, 467, 162]",0.0,
+mJedU6mDToIkKY8H7mDleg,0,mJedU6mDToIkKY8H7mDleg_0.jpg,mJedU6mDToIkKY8H7mDleg_0_det.jpg,0,Dome Camera,1,0.824305,"[179, 202, 194, 213]",1.0,
+mJedU6mDToIkKY8H7mDleg,0,mJedU6mDToIkKY8H7mDleg_0.jpg,mJedU6mDToIkKY8H7mDleg_0_det.jpg,1,Dome Camera,1,0.22785,"[205, 162, 216, 181]",0.0,
+mjhLA5mdoIN4hq49iAKOPg,90,mjhLA5mdoIN4hq49iAKOPg_90.jpg,mjhLA5mdoIN4hq49iAKOPg_90_det.jpg,0,Directed Camera,0,0.273495,"[242, 136, 252, 148]",1.0,
+ry2wH7j6jJrVee9L72cEJg,90,ry2wH7j6jJrVee9L72cEJg_90.jpg,ry2wH7j6jJrVee9L72cEJg_90_det.jpg,0,Dome Camera,1,0.083138,"[315, 92, 323, 100]",1.0,is a streelight but could very likely have a camera
+s3EKI0qkuJzfqG46P6dbtg,270,s3EKI0qkuJzfqG46P6dbtg_270.jpg,s3EKI0qkuJzfqG46P6dbtg_270_det.jpg,0,Dome Camera,1,0.556773,"[332, 213, 340, 220]",1.0,but wrong shape
+s3EKI0qkuJzfqG46P6dbtg,270,s3EKI0qkuJzfqG46P6dbtg_270.jpg,s3EKI0qkuJzfqG46P6dbtg_270_det.jpg,1,Directed Camera,0,0.321298,"[346, 217, 356, 225]",1.0,but wrong shapex
+wc1eDQUrZqJ6bbayrl2Txw,270,wc1eDQUrZqJ6bbayrl2Txw_270.jpg,wc1eDQUrZqJ6bbayrl2Txw_270_det.jpg,0,Dome Camera,1,0.883643,"[111, 101, 123, 117]",0.0,street light
+wc1eDQUrZqJ6bbayrl2Txw,270,wc1eDQUrZqJ6bbayrl2Txw_270.jpg,wc1eDQUrZqJ6bbayrl2Txw_270_det.jpg,1,Dome Camera,1,0.654692,"[154, 40, 171, 61]",0.0,street light

@@ -1,0 +1,9 @@
+{
+  "n_per_source": 60,
+  "n_alpr": 60,
+  "n_surveillance_sample": 60,
+  "seed": 42,
+  "alpr_csv": "alpr_data/visual_inspection.csv",
+  "surv_csv": "data/threshold_analysis/visual_inspection.csv",
+  "combined_csv": "data/roc_balanced_subset/combined_visual_inspection.csv"
+}

@@ -1,12 +1,16 @@
-# Byte-compiled / optimized / DLL files
+# --- OS & editors ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# --- Python ---
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -27,17 +31,11 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+# Byte-compiled / packaging
 *.manifest
 *.spec
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
+# Tests / coverage
 htmlcov/
 .tox/
 .nox/
@@ -51,91 +49,88 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Translations
-*.mo
-*.pot
+# Type checkers / linters
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.ruff_cache/
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+# Jupyter
+.ipynb_checkpoints/
 
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
+# Virtual environments
 .env
-.venv
-env/
+.env.*
+!.env.example
+.venv/
 venv/
+env/
 ENV/
 env.bak/
 venv.bak/
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# --- R ---
+.Rhistory
+.RData
+.Rproj.user
 
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# IPython Notebook
-*.ipynb
-*.csv
+# --- ML / large binaries (typical for this repo) ---
 *.ckpt
-output/
-cache/
-figures/
-notebook/ 
+*.pth
+*.pt
+*.onnx
+*.h5
+*.pkl
+*.pickle
+*.safetensors
 
-# Images
-*.jpg
+# Bundled model downloads (often hundreds of MB; install per README / upstream)
+detection/model/*.zip
+
+# --- Project caches ---
+/cache/
+
+# --- Secrets (never commit) ---
+secrets.json
+credentials.json
+*_google_api_key*
+*_API_KEY*
+
+# --- Sphinx / docs builds ---
+docs/_build/
+
+# --- Project data-heavy artifacts (do not upload) ---
+# Raw downloaded imagery
+data/rawdata/
+
+# Surveillance pipeline outputs
+data/centercity/images/
+data/centercity/detections/
+data/detection_output/
+data/full_run/images/
+data/full_run/detections/
+data/full_run/visualizations/
+data/full_run/visualizations_combined/
+data/threshold_analysis/images/
+data/threshold_analysis/detections/
+data/threshold_analysis/all_detections.csv
+data/threshold_analysis/sample_meta.csv
+data/roc_balanced_subset/alpr/
+data/roc_balanced_subset/surveillance/
+
+# ALPR pipeline outputs
+alpr_data/test_run/
+alpr_data/data/manual_tests/
+alpr_data/threshold_analysis/images/
+alpr_data/threshold_analysis/detections/
+alpr_data/threshold_analysis/all_detections.csv
+alpr_data/threshold_analysis/alpr_meta.csv
+alpr_data/threshold_analysis/alpr_location_detections.csv
+
+# Generated figures/exports
+#outputs/figures/
+#analysis/results_philly.html
+
+# Nested standalone repo (managed separately)
+philly_surveillance_feb/

@@ -1,0 +1,113 @@
+---
+title: "Philadelphia Surveillance — Results"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+```{r load-libraries}
+library(tidyverse)
+library(sf)
+library(here)
+library(tidycensus)
+
+source(here::here("analysis", "figures.R"))
+theme_set(theme_bw(base_size = 14))
+```
+```{r load-and-prep}
+road_raw <- read_csv(here::here("data", "full_run", "positive_detections.csv"))
+alpr_raw <- read_csv(here::here("data", "full_run", "combined_positive_detections.csv")) %>%
+  filter(origin == "alpr")
+
+# One row per sampled GSV image (incl. zero detections); see streetview/philly_metadata.py
+meta <- read_csv(here::here("data", "philly_meta.csv"))
+
+road_counts <- road_raw %>%
+  group_by(panoid, lat, lon) %>%
+  summarise(camera_count = n(), .groups = "drop")
+
+df_road <- meta %>%
+  select(panoid, lat, lon) %>%
+  left_join(road_counts, by = c("panoid", "lat", "lon")) %>%
+  mutate(
+    camera_count = replace_na(camera_count, 0),
+    city         = "Philadelphia"
+  )
+
+alpr_counts <- alpr_raw %>%
+  group_by(panoid, lat, lon) %>%
+  summarise(camera_count = n(), .groups = "drop") %>%
+  mutate(city = "Philadelphia")
+
+city_data <- tibble(
+  city                   = "Philadelphia",
+  type                   = "US",
+  state                  = "PA",
+  county                 = "Philadelphia County",
+  road_network_length_km = 6089,
+  # Implied mean spacing along network so pop_pano = N (see figures.R estimate_detection_metrics);
+  # philly_metadata CLI can use --min_spacing 50; default run uses min_spacing=NULL.
+  m_per_pano             = 2 * road_network_length_km * 1000 / nrow(meta),
+  population_census2010  = 1526006
+)
+```
+
+## Figure 1 — Sampled locations across Philadelphia
+```{r sampled-map, fig.width=8, fig.height=10}
+generate_sampled_point_map(df_road, "Philadelphia")
+```
+
+## Figure 2 — Detected surveillance cameras
+```{r detected-map, fig.width=8, fig.height=10}
+generate_detected_point_map(df_road, "Philadelphia")
+```
+
+## Figure 3 — Camera density estimate
+```{r density}
+em <- df_road %>%
+  summarise(
+    n_pano      = n(),
+    n_detection = sum(camera_count)
+  ) %>%
+  mutate(city = "Philadelphia", period = "2024") %>%
+  estimate_detection_metrics()
+
+tibble(
+  Metric = c("Detections per km (est.)", "SE", "Total cameras (est.)"),
+  Value  = c(
+    round(em$est_detections_per_km, 3),
+    round(em$se_detections_per_km,  3),
+    round(em$est_detections,        0)
+  )
+) %>%
+  knitr::kable()
+```
+
+## Figure 4 — Demographic correlations
+```{r census-join}
+df_road_race <- annotate_points_with_census(df_road, "Philadelphia", "race")
+
+df_road_race %>%
+  st_drop_geometry() %>%
+  ggplot(aes(x = percentage_minority, y = camera_count)) +
+  geom_smooth(
+    method  = "lm",
+    formula = y ~ poly(x, degree = 2),
+    se      = TRUE
+  ) +
+  scale_x_continuous(
+    name   = "Minority share of population (census block group)",
+    labels = scales::percent_format(accuracy = 1)
+  ) +
+  scale_y_continuous(name = "Detections per image") +
+  theme(
+    panel.grid   = element_blank(),
+    panel.border = element_blank(),
+    axis.line    = element_line(size = 0.5, color = "black")
+  )
+```
+
+## Figure 5 — ALPR sweep detections
+```{r alpr-map, fig.width=8, fig.height=10}
+generate_detected_point_map(alpr_counts, "Philadelphia")
+```

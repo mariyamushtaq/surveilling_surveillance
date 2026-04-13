@@ -1,0 +1,70 @@
+panoid,heading,image,det_image,det_index,class,class_id,score,score_band,bbox,is_correct,notes
+1AT3tDHTP12xCibiByNw3w,100,1AT3tDHTP12xCibiByNw3w_100.jpg,1AT3tDHTP12xCibiByNw3w_100_det.jpg,0,Directed Camera,0,0.21369,0.2-0.4,"[480, 236, 488, 242]",0.0,
+1JTvoCzVNyfrZEXbI2X0-g,306,1JTvoCzVNyfrZEXbI2X0-g_306.jpg,1JTvoCzVNyfrZEXbI2X0-g_306_det.jpg,0,Directed Camera,0,0.946184,0.8-1.0 (high),"[602, 82, 626, 102]",0.0,some yes but some are light fixures with same structure as cameras
+1JTvoCzVNyfrZEXbI2X0-g,306,1JTvoCzVNyfrZEXbI2X0-g_306.jpg,1JTvoCzVNyfrZEXbI2X0-g_306_det.jpg,1,Dome Camera,1,0.255033,0.2-0.4,"[617, 57, 628, 68]",1.0,
+1JTvoCzVNyfrZEXbI2X0-g,306,1JTvoCzVNyfrZEXbI2X0-g_306.jpg,1JTvoCzVNyfrZEXbI2X0-g_306_det.jpg,2,Dome Camera,1,0.086511,0.0-0.2 (low),"[596, 167, 605, 176]",0.0,
+3jZjDpmXG-dn14r6qO9n5g,235,3jZjDpmXG-dn14r6qO9n5g_235.jpg,3jZjDpmXG-dn14r6qO9n5g_235_det.jpg,0,Dome Camera,1,0.064682,0.0-0.2 (low),"[541, 304, 547, 310]",1.0,
+4xobFSnnn_cOfzYofF2y0g,278,4xobFSnnn_cOfzYofF2y0g_278.jpg,4xobFSnnn_cOfzYofF2y0g_278_det.jpg,0,Dome Camera,1,0.455687,0.4-0.6,"[265, 54, 296, 71]",0.0,thats streelight
+56w3J4ugLQiVwHZkUKnLkA,280,56w3J4ugLQiVwHZkUKnLkA_280.jpg,56w3J4ugLQiVwHZkUKnLkA_280_det.jpg,0,Dome Camera,1,0.898542,0.8-1.0 (high),"[176, 265, 184, 275]",1.0,
+56w3J4ugLQiVwHZkUKnLkA,280,56w3J4ugLQiVwHZkUKnLkA_280.jpg,56w3J4ugLQiVwHZkUKnLkA_280_det.jpg,1,Dome Camera,1,0.731428,0.6-0.8,"[151, 263, 162, 272]",1.0,
+6o5JY0F4sNcPTetFracwsw,189,6o5JY0F4sNcPTetFracwsw_189.jpg,6o5JY0F4sNcPTetFracwsw_189_det.jpg,0,Directed Camera,0,0.069931,0.0-0.2 (low),"[292, 189, 300, 196]",0.0,
+9GhnXklQrJ2XbkslWehUmg,246,9GhnXklQrJ2XbkslWehUmg_246.jpg,9GhnXklQrJ2XbkslWehUmg_246_det.jpg,0,Dome Camera,1,0.809298,0.8-1.0 (high),"[506, 222, 514, 229]",1.0,but there is another dome one next to it that it didnt detect
+9GhnXklQrJ2XbkslWehUmg,246,9GhnXklQrJ2XbkslWehUmg_246.jpg,9GhnXklQrJ2XbkslWehUmg_246_det.jpg,1,Directed Camera,0,0.1706,0.0-0.2 (low),"[460, 89, 471, 103]",0.0,shape is similar but its not
+9q9Wa96pjQ8WbTneijhbtw,137,9q9Wa96pjQ8WbTneijhbtw_137.jpg,9q9Wa96pjQ8WbTneijhbtw_137_det.jpg,0,Dome Camera,1,0.634068,0.6-0.8,"[17, 92, 23, 100]",0.0,tv antenna
+9q9Wa96pjQ8WbTneijhbtw,137,9q9Wa96pjQ8WbTneijhbtw_137.jpg,9q9Wa96pjQ8WbTneijhbtw_137_det.jpg,1,Dome Camera,1,0.067897,0.0-0.2 (low),"[15, 91, 22, 99]",0.0,
+A9nN3L4n-JSRSrY1jY_73g,9,A9nN3L4n-JSRSrY1jY_73g_9.jpg,A9nN3L4n-JSRSrY1jY_73g_9_det.jpg,0,Directed Camera,0,0.991757,0.8-1.0 (high),"[350, 123, 373, 140]",,structure very familiar to a directoed camera 
+AbkJYAyxTY9NaugCBSQ2mA,189,AbkJYAyxTY9NaugCBSQ2mA_189.jpg,AbkJYAyxTY9NaugCBSQ2mA_189_det.jpg,0,Dome Camera,1,0.571392,0.4-0.6,"[370, 231, 382, 242]",1.0,
+EVp3rkxyMPsCjbTDbbk2OQ,187,EVp3rkxyMPsCjbTDbbk2OQ_187.jpg,EVp3rkxyMPsCjbTDbbk2OQ_187_det.jpg,0,Dome Camera,1,0.085169,0.0-0.2 (low),"[122, 289, 126, 294]",0.0,traffic light
+Ef1x4gUIQL9Jn9nSMWcWAA,279,Ef1x4gUIQL9Jn9nSMWcWAA_279.jpg,Ef1x4gUIQL9Jn9nSMWcWAA_279_det.jpg,0,Dome Camera,1,0.598416,0.4-0.6,"[408, 236, 419, 250]",1.0,
+Ef1x4gUIQL9Jn9nSMWcWAA,279,Ef1x4gUIQL9Jn9nSMWcWAA_279.jpg,Ef1x4gUIQL9Jn9nSMWcWAA_279_det.jpg,1,Dome Camera,1,0.132899,0.0-0.2 (low),"[384, 241, 394, 251]",1.0,
+Fkzya5D7tYgnaQhMT0d8EA,116,Fkzya5D7tYgnaQhMT0d8EA_116.jpg,Fkzya5D7tYgnaQhMT0d8EA_116_det.jpg,0,Dome Camera,1,0.069363,0.0-0.2 (low),"[81, 249, 87, 254]",1.0,
+G9aCEH5J6UAAreypwAINwg,227,G9aCEH5J6UAAreypwAINwg_227.jpg,G9aCEH5J6UAAreypwAINwg_227_det.jpg,0,Directed Camera,0,0.7319,0.6-0.8,"[366, 198, 378, 209]",0.0,however there is a dome camera in the image that it didnt detect
+GQ0fm-ru6VwXGDTNDGpFTA,35,GQ0fm-ru6VwXGDTNDGpFTA_35.jpg,GQ0fm-ru6VwXGDTNDGpFTA_35_det.jpg,0,Dome Camera,1,0.368925,0.2-0.4,"[513, 244, 532, 258]",0.0,
+GQ0fm-ru6VwXGDTNDGpFTA,35,GQ0fm-ru6VwXGDTNDGpFTA_35.jpg,GQ0fm-ru6VwXGDTNDGpFTA_35_det.jpg,1,Directed Camera,0,0.074525,0.0-0.2 (low),"[89, 199, 100, 205]",0.0,
+GSGTbkpaXCforMEglngrKg,189,GSGTbkpaXCforMEglngrKg_189.jpg,GSGTbkpaXCforMEglngrKg_189_det.jpg,0,Directed Camera,0,0.052761,0.0-0.2 (low),"[598, 268, 615, 277]",1.0,
+HQ_H-UvI5MGKR4bic4QCZg,352,HQ_H-UvI5MGKR4bic4QCZg_352.jpg,HQ_H-UvI5MGKR4bic4QCZg_352_det.jpg,0,Dome Camera,1,0.119706,0.0-0.2 (low),"[360, 222, 370, 234]",0.0,
+IEDeoMuPV-lUihkK4sXHBg,47,IEDeoMuPV-lUihkK4sXHBg_47.jpg,IEDeoMuPV-lUihkK4sXHBg_47_det.jpg,0,Dome Camera,1,0.228751,0.2-0.4,"[387, 269, 394, 274]",0.0,
+IEDeoMuPV-lUihkK4sXHBg,47,IEDeoMuPV-lUihkK4sXHBg_47.jpg,IEDeoMuPV-lUihkK4sXHBg_47_det.jpg,1,Dome Camera,1,0.17817,0.0-0.2 (low),"[399, 186, 411, 195]",0.0,
+IEDeoMuPV-lUihkK4sXHBg,47,IEDeoMuPV-lUihkK4sXHBg_47.jpg,IEDeoMuPV-lUihkK4sXHBg_47_det.jpg,2,Dome Camera,1,0.063695,0.0-0.2 (low),"[381, 186, 395, 195]",0.0,
+Ij6_IZRbXTMkzYwufE3sjQ,243,Ij6_IZRbXTMkzYwufE3sjQ_243.jpg,Ij6_IZRbXTMkzYwufE3sjQ_243_det.jpg,0,Dome Camera,1,0.572121,0.4-0.6,"[314, 167, 320, 172]",0.0,
+InnNPyOOWgcdUXfx6SzvAA,75,InnNPyOOWgcdUXfx6SzvAA_75.jpg,InnNPyOOWgcdUXfx6SzvAA_75_det.jpg,0,Directed Camera,0,0.16683,0.0-0.2 (low),"[595, 196, 604, 207]",0.0,
+J6TKAoCRf2q_7BUl8tqa_A,279,J6TKAoCRf2q_7BUl8tqa_A_279.jpg,J6TKAoCRf2q_7BUl8tqa_A_279_det.jpg,0,Directed Camera,0,0.930828,0.8-1.0 (high),"[620, 267, 629, 276]",1.0,im a still confused about the dome detection though
+J6TKAoCRf2q_7BUl8tqa_A,279,J6TKAoCRf2q_7BUl8tqa_A_279.jpg,J6TKAoCRf2q_7BUl8tqa_A_279_det.jpg,1,Dome Camera,1,0.900765,0.8-1.0 (high),"[482, 166, 492, 181]",1.0,probably yeah
+J6TKAoCRf2q_7BUl8tqa_A,279,J6TKAoCRf2q_7BUl8tqa_A_279.jpg,J6TKAoCRf2q_7BUl8tqa_A_279_det.jpg,2,Directed Camera,0,0.130736,0.0-0.2 (low),"[618, 268, 624, 276]",1.0,
+JGdwdTsJiqi2KST1-gXP2g,98,JGdwdTsJiqi2KST1-gXP2g_98.jpg,JGdwdTsJiqi2KST1-gXP2g_98_det.jpg,0,Directed Camera,0,0.8249,0.8-1.0 (high),"[259, 221, 279, 233]",0.0,its just white colored wire thing not at all a camera
+L3w3s9u0WLF72RVkBVRpIA,326,L3w3s9u0WLF72RVkBVRpIA_326.jpg,L3w3s9u0WLF72RVkBVRpIA_326_det.jpg,0,Dome Camera,1,0.444466,0.4-0.6,"[372, 75, 382, 88]",0.0,
+L3w3s9u0WLF72RVkBVRpIA,326,L3w3s9u0WLF72RVkBVRpIA_326.jpg,L3w3s9u0WLF72RVkBVRpIA_326_det.jpg,1,Directed Camera,0,0.31121,0.2-0.4,"[490, 195, 514, 213]",0.0,tv antenna
+LzhJFQLv4NM83b028AS36w,236,LzhJFQLv4NM83b028AS36w_236.jpg,LzhJFQLv4NM83b028AS36w_236_det.jpg,0,Directed Camera,0,0.444946,0.4-0.6,"[266, 255, 274, 263]",0.0,thats water pipe down the roof
+Muk4BTtwWw1p1Px8vYViWA,55,Muk4BTtwWw1p1Px8vYViWA_55.jpg,Muk4BTtwWw1p1Px8vYViWA_55_det.jpg,0,Dome Camera,1,0.659049,0.6-0.8,"[87, 66, 96, 77]",1.0,
+N4cF21wg7BmLhs8HS_upgg,61,N4cF21wg7BmLhs8HS_upgg_61.jpg,N4cF21wg7BmLhs8HS_upgg_61_det.jpg,0,Directed Camera,0,0.403659,0.4-0.6,"[40, 193, 58, 203]",0.0,thats light reflection with similar shape
+N5R804_BcOPmlr0_gU9ugg,35,N5R804_BcOPmlr0_gU9ugg_35.jpg,N5R804_BcOPmlr0_gU9ugg_35_det.jpg,0,Dome Camera,1,0.29172,0.2-0.4,"[346, 114, 356, 128]",0.0,
+NfV9lOt2OpOekGeRLqqcmw,355,NfV9lOt2OpOekGeRLqqcmw_355.jpg,NfV9lOt2OpOekGeRLqqcmw_355_det.jpg,0,Dome Camera,1,0.534961,0.4-0.6,"[17, 89, 39, 100]",1.0,but its directed not dome
+PnFY_PD5SkDMU4LPNRJ-xg,189,PnFY_PD5SkDMU4LPNRJ-xg_189.jpg,PnFY_PD5SkDMU4LPNRJ-xg_189_det.jpg,0,Directed Camera,0,0.175195,0.0-0.2 (low),"[553, 282, 559, 290]",1.0,
+Q9KF6OUDyHB8b-hYwbI9gA,127,Q9KF6OUDyHB8b-hYwbI9gA_127.jpg,Q9KF6OUDyHB8b-hYwbI9gA_127_det.jpg,0,Dome Camera,1,0.399234,0.2-0.4,"[168, 160, 184, 171]",0.0,streetlight
+QVGvvWxP-orDncoNT9jPGg,128,QVGvvWxP-orDncoNT9jPGg_128.jpg,QVGvvWxP-orDncoNT9jPGg_128_det.jpg,0,Directed Camera,0,0.419389,0.4-0.6,"[76, 272, 94, 291]",0.0,
+QVGvvWxP-orDncoNT9jPGg,128,QVGvvWxP-orDncoNT9jPGg_128.jpg,QVGvvWxP-orDncoNT9jPGg_128_det.jpg,1,Dome Camera,1,0.156027,0.0-0.2 (low),"[392, 179, 403, 192]",,
+QmRA4mDhcKsoPMFB5rqyCw,189,QmRA4mDhcKsoPMFB5rqyCw_189.jpg,QmRA4mDhcKsoPMFB5rqyCw_189_det.jpg,0,Directed Camera,0,0.564383,0.4-0.6,"[489, 142, 501, 153]",1.0,but not the whole object just whats at the top
+SgPhp6bNA4hz0Czq0dQofg,352,SgPhp6bNA4hz0Czq0dQofg_352.jpg,SgPhp6bNA4hz0Czq0dQofg_352_det.jpg,0,Dome Camera,1,0.84756,0.8-1.0 (high),"[546, 239, 556, 254]",1.0,i gues im not sure
+SxxVjuQJXLNk5tsNQAtpkQ,236,SxxVjuQJXLNk5tsNQAtpkQ_236.jpg,SxxVjuQJXLNk5tsNQAtpkQ_236_det.jpg,0,Directed Camera,0,0.51548,0.4-0.6,"[424, 269, 431, 276]",1.0,
+TNH5o6r-c8UmN4uFsPQAZw,279,TNH5o6r-c8UmN4uFsPQAZw_279.jpg,TNH5o6r-c8UmN4uFsPQAZw_279_det.jpg,0,Dome Camera,1,0.736719,0.6-0.8,"[554, 231, 567, 241]",1.0,
+Uxfqz6Tyrgl6ppi10INR6g,99,Uxfqz6Tyrgl6ppi10INR6g_99.jpg,Uxfqz6Tyrgl6ppi10INR6g_99_det.jpg,0,Dome Camera,1,0.123348,0.0-0.2 (low),"[81, 154, 121, 184]",0.0,
+Uxfqz6Tyrgl6ppi10INR6g,99,Uxfqz6Tyrgl6ppi10INR6g_99.jpg,Uxfqz6Tyrgl6ppi10INR6g_99_det.jpg,1,Directed Camera,0,0.050886,0.0-0.2 (low),"[617, 191, 627, 209]",0.0,
+WCBi-uw096EVOiIk6xkHRA,317,WCBi-uw096EVOiIk6xkHRA_317.jpg,WCBi-uw096EVOiIk6xkHRA_317_det.jpg,0,Directed Camera,0,0.91154,0.8-1.0 (high),"[413, 219, 428, 235]",0.0,its the roof
+Wu2Cdx1OGHyH951Nx8pIRw,76,Wu2Cdx1OGHyH951Nx8pIRw_76.jpg,Wu2Cdx1OGHyH951Nx8pIRw_76_det.jpg,0,Dome Camera,1,0.455391,0.4-0.6,"[95, 185, 109, 208]",1.0,
+Z8I9_O39yJdR5ZpF31rszQ,189,Z8I9_O39yJdR5ZpF31rszQ_189.jpg,Z8I9_O39yJdR5ZpF31rszQ_189_det.jpg,0,Directed Camera,0,0.906804,0.8-1.0 (high),"[394, 180, 408, 198]",0.0,roof has curves shaped like a directed camera body
+heZBY2PY-UcWlh2CLBqudA,326,heZBY2PY-UcWlh2CLBqudA_326.jpg,heZBY2PY-UcWlh2CLBqudA_326_det.jpg,0,Directed Camera,0,0.246422,0.2-0.4,"[263, 268, 276, 281]",1.0,maybe a camera
+i0bQ6ffkLCFPfNt8UWyB0g,55,i0bQ6ffkLCFPfNt8UWyB0g_55.jpg,i0bQ6ffkLCFPfNt8UWyB0g_55_det.jpg,0,Dome Camera,1,0.35537,0.2-0.4,"[221, 254, 232, 272]",0.0,tv antenna
+ngtdQvTT2onx09M5Vk1pBw,280,ngtdQvTT2onx09M5Vk1pBw_280.jpg,ngtdQvTT2onx09M5Vk1pBw_280_det.jpg,0,Directed Camera,0,0.695539,0.6-0.8,"[501, 279, 514, 289]",0.0,thats a pole or something
+qq_FQ3GMjQDyVcQZyGCu7A,99,qq_FQ3GMjQDyVcQZyGCu7A_99.jpg,qq_FQ3GMjQDyVcQZyGCu7A_99_det.jpg,0,Dome Camera,1,0.415974,0.4-0.6,"[438, 276, 445, 282]",0.0,
+rQpdAO9Y8t8Y1uT2hg4Xcw,48,rQpdAO9Y8t8Y1uT2hg4Xcw_48.jpg,rQpdAO9Y8t8Y1uT2hg4Xcw_48_det.jpg,0,Dome Camera,1,0.767498,0.6-0.8,"[241, 138, 247, 148]",,shape is similar and its white 
+sV5WvXGS_5Y91EXpq2WRhQ,59,sV5WvXGS_5Y91EXpq2WRhQ_59.jpg,sV5WvXGS_5Y91EXpq2WRhQ_59_det.jpg,0,Directed Camera,0,0.169041,0.0-0.2 (low),"[307, 27, 319, 40]",0.0,
+tdpgzS0VfkX1as4AsPDkhw,336,tdpgzS0VfkX1as4AsPDkhw_336.jpg,tdpgzS0VfkX1as4AsPDkhw_336_det.jpg,0,Dome Camera,1,0.184071,0.0-0.2 (low),"[83, 243, 94, 253]",0.0,
+tmM9Qbrjswbzcm5wPitJ5A,99,tmM9Qbrjswbzcm5wPitJ5A_99.jpg,tmM9Qbrjswbzcm5wPitJ5A_99_det.jpg,0,Dome Camera,1,0.952299,0.8-1.0 (high),"[335, 221, 343, 235]",,the one detected wrong is a lightbulb? 
+tmM9Qbrjswbzcm5wPitJ5A,99,tmM9Qbrjswbzcm5wPitJ5A_99.jpg,tmM9Qbrjswbzcm5wPitJ5A_99_det.jpg,1,Dome Camera,1,0.903165,0.8-1.0 (high),"[590, 143, 603, 161]",,one camera one lamp
+u_r7nlimy_6w9iwdypOXvQ,279,u_r7nlimy_6w9iwdypOXvQ_279.jpg,u_r7nlimy_6w9iwdypOXvQ_279_det.jpg,0,Directed Camera,0,0.811414,0.8-1.0 (high),"[206, 179, 217, 192]",1.0,yes but dome i think
+u_r7nlimy_6w9iwdypOXvQ,279,u_r7nlimy_6w9iwdypOXvQ_279.jpg,u_r7nlimy_6w9iwdypOXvQ_279_det.jpg,1,Dome Camera,1,0.225607,0.2-0.4,"[372, 177, 382, 192]",1.0,
+w5z3sybSOQDT7XwdkTwbnA,99,w5z3sybSOQDT7XwdkTwbnA_99.jpg,w5z3sybSOQDT7XwdkTwbnA_99_det.jpg,0,Directed Camera,0,0.482336,0.4-0.6,"[115, 256, 121, 263]",1.0,maybe dome?
+yRpDT7d0pio9bLEDuv9YXA,145,yRpDT7d0pio9bLEDuv9YXA_145.jpg,yRpDT7d0pio9bLEDuv9YXA_145_det.jpg,0,Dome Camera,1,0.852176,0.8-1.0 (high),"[114, 148, 130, 159]",,yes but it a directed camera and only one 
+yRpDT7d0pio9bLEDuv9YXA,145,yRpDT7d0pio9bLEDuv9YXA_145.jpg,yRpDT7d0pio9bLEDuv9YXA_145_det.jpg,1,Dome Camera,1,0.566504,0.4-0.6,"[121, 149, 132, 159]",0.0,a directed camera and only one not two
+z1EGCfJGHXuDIeDjAlu6xw,16,z1EGCfJGHXuDIeDjAlu6xw_16.jpg,z1EGCfJGHXuDIeDjAlu6xw_16_det.jpg,0,Dome Camera,1,0.270037,0.2-0.4,"[201, 156, 216, 165]",0.0,
+zrUTNc1ukjQt54qqPA098w,47,zrUTNc1ukjQt54qqPA098w_47.jpg,zrUTNc1ukjQt54qqPA098w_47_det.jpg,0,Directed Camera,0,0.812302,0.8-1.0 (high),"[469, 249, 481, 259]",0.0,thats a leaf

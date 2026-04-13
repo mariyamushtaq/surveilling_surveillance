@@ -64,8 +64,24 @@ plot_camera_density <- function(df, legend = TRUE) {
 load_road_network <- function(city_name){
   stopifnot(city_name %in% city_data$city)
   
-  path <- here::here("data", "road_network", city_name, "edges.shp")
-  read_sf(path)
+  # Try GeoJSON first (Philadelphia export), fall back to shapefile (other cities)
+  geojson_path <- here::here("data", "road_network", city_name, "edges.geojson")
+  shp_path     <- here::here("data", "road_network", city_name, "edges.shp")
+  
+  if (file.exists(geojson_path)) {
+    road_network <- read_sf(geojson_path)
+  } else if (file.exists(shp_path)) {
+    road_network <- read_sf(shp_path)
+  } else {
+    return(NULL)
+  }
+  
+  # Always reproject to WGS84 so detection lon/lat points align correctly
+  if (!is.na(st_crs(road_network)$epsg) && st_crs(road_network)$epsg != 4326) {
+    road_network <- st_transform(road_network, 4326)
+  }
+  
+  road_network
 }
 
 get_max_points <- function(df){
@@ -83,31 +99,26 @@ get_max_points <- function(df){
 }
 
 generate_sampled_point_map <- function(df, city_name){
-  # load road network
   road_network <- load_road_network(city_name)
+  road_network_crs <- 4326
   
-  # get crs
-  road_network_crs <- st_crs(road_network) %>%
-    as.integer() 
-  road_network_crs <- road_network_crs[1]
+  pts <- df %>%
+    filter(city == city_name) %>%
+    st_as_sf(coords = c("lon", "lat"), crs = road_network_crs, agr = "constant")
   
-  # find bounding coordinates of road network
-  bbox <- st_bbox(road_network)
+  bbox <- if (!is.null(road_network)) {
+    st_bbox(road_network)
+  } else {
+    st_bbox(pts)
+  }
   
-  # plot points
-  road_network %>%
-    ggplot() +
-    geom_sf(fill = "white", color = "gray", alpha = 0.6) +
-    geom_sf(
-      data = df %>%
-        filter(city == city_name) %>%
-        st_as_sf(coords = c("lon", "lat"),
-                 # ensure same crs as road network
-                 crs = road_network_crs, 
-                 agr = "constant"), 
-      color = "blue", size = 0.2, 
-      shape = 16, alpha = 1 
-    ) + 
+  p <- ggplot()
+  if (!is.null(road_network)) {
+    p <- p +
+      geom_sf(data = road_network, fill = "white", color = "gray", alpha = 0.6)
+  }
+  p <- p +
+    geom_sf(data = pts, color = "blue", size = 0.2, shape = 16, alpha = 1) +
     scale_x_continuous(expand = expansion(mult = c(0.02, 0.02))) +
     scale_y_continuous(expand = expansion(mult = c(0, 0.02))) +
     coord_sf(xlim = c(bbox$xmin, bbox$xmax), ylim = c(bbox$ymin, bbox$ymax)) +
@@ -119,37 +130,30 @@ generate_sampled_point_map <- function(df, city_name){
       legend.position = "bottom",
       legend.text = element_text(size = 20)
     )
+  p
 }
 
 generate_detected_point_map <- function(df, city_name){
-  # load road network
   road_network <- load_road_network(city_name)
+  road_network_crs <- 4326
   
-  # get crs
-  road_network_crs <- st_crs(road_network) %>%
-    as.integer() 
-  road_network_crs <- road_network_crs[1]
+  pts <- df %>%
+    filter(city == city_name, camera_count > 0) %>%
+    st_as_sf(coords = c("lon", "lat"), crs = road_network_crs, agr = "constant")
   
-  # find bounding coordinates of road network
-  bbox <- st_bbox(road_network)
+  bbox <- if (!is.null(road_network)) {
+    st_bbox(road_network)
+  } else {
+    st_bbox(pts)
+  }
   
-  # plot points
-  road_network %>%
-    ggplot() +
-    geom_sf(fill = "white", color = "gray", alpha = 0.6) +
-    geom_sf(
-      data = df %>%
-        filter(
-          city == city_name,
-          camera_count > 0
-        ) %>%
-        st_as_sf(coords = c("lon", "lat"),
-                 # ensure same crs as road network
-                 crs = road_network_crs, 
-                 agr = "constant"), 
-      color = "red", size = 0.5,
-      shape = 16, alpha = 1
-    ) + 
+  p <- ggplot()
+  if (!is.null(road_network)) {
+    p <- p +
+      geom_sf(data = road_network, fill = "white", color = "gray", alpha = 0.6)
+  }
+  p <- p +
+    geom_sf(data = pts, color = "red", size = 0.5, shape = 16, alpha = 1) +
     scale_x_continuous(expand = expansion(mult = c(0.02, 0.02))) +
     scale_y_continuous(expand = expansion(mult = c(0, 0.02))) +
     coord_sf(xlim = c(bbox$xmin, bbox$xmax), ylim = c(bbox$ymin, bbox$ymax)) +
@@ -161,6 +165,7 @@ generate_detected_point_map <- function(df, city_name){
       legend.position = "bottom",
       legend.text = element_text(size = 20)
     )
+  p
 }
 
 annotate_points_with_census <- function(df, city_name, census_var){

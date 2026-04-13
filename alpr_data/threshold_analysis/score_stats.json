@@ -1,0 +1,12 @@
+{
+  "total_images": 396,
+  "images_with_detections": 46,
+  "total_detections": 64,
+  "directed_camera_count": 17,
+  "dome_camera_count": 47,
+  "mean_score": 0.3883,
+  "median_score": 0.2961,
+  "std_score": 0.2714,
+  "min_score": 0.0694,
+  "max_score": 0.97
+}
