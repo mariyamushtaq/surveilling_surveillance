@@ -1,0 +1,29 @@
+{
+  "image": "_RuAUCiuglfF2EZZ0ZVXlA_270.jpg",
+  "detections": [
+    {
+      "image": "_RuAUCiuglfF2EZZ0ZVXlA_270.jpg",
+      "class": "Dome Camera",
+      "class_id": 1,
+      "score": 0.8177,
+      "bbox": [
+        532,
+        169,
+        544,
+        183
+      ]
+    },
+    {
+      "image": "_RuAUCiuglfF2EZZ0ZVXlA_270.jpg",
+      "class": "Dome Camera",
+      "class_id": 1,
+      "score": 0.8146,
+      "bbox": [
+        186,
+        223,
+        197,
+        236
+      ]
+    }
+  ]
+}

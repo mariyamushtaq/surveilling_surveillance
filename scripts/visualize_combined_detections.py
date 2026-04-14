@@ -80,11 +80,17 @@ def build_combined_frame(
     meta = meta.rename(columns={"image_id": "_img_key"})
     alpr["_img_key"] = alpr["image"].str.replace(".jpg", "", regex=False)
     keep_meta = ["_img_key", "panoid", "heading", "lat", "lon"]
+    for c in ("lat_alpr", "lon_alpr"):
+        if c in meta.columns:
+            keep_meta.append(c)
     missing = [c for c in keep_meta if c not in meta.columns]
     if missing:
         raise ValueError(f"alpr_meta missing columns: {missing}")
     alpr = alpr.merge(meta[keep_meta], on="_img_key", how="left")
     alpr = alpr.drop(columns=["_img_key"])
+    for c in ("lat_alpr", "lon_alpr"):
+        if c not in alpr.columns:
+            alpr[c] = np.nan
     n_miss = alpr["lat"].isna().sum()
     if n_miss:
         print(f"  Warning: {n_miss} ALPR detections missing lat/lon after meta join")
@@ -97,6 +103,8 @@ def build_combined_frame(
         "heading",
         "lat",
         "lon",
+        "lat_alpr",
+        "lon_alpr",
         "class",
         "class_id",
         "score",

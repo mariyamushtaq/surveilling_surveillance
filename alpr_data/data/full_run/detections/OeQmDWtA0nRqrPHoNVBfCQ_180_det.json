@@ -1,0 +1,17 @@
+{
+  "image": "OeQmDWtA0nRqrPHoNVBfCQ_180.jpg",
+  "detections": [
+    {
+      "image": "OeQmDWtA0nRqrPHoNVBfCQ_180.jpg",
+      "class": "Directed Camera",
+      "class_id": 0,
+      "score": 0.761,
+      "bbox": [
+        566,
+        217,
+        573,
+        224
+      ]
+    }
+  ]
+}

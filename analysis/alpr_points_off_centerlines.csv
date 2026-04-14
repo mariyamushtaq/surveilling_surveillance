@@ -1,0 +1,16 @@
+lat,lon,dist_to_centerline_m,n_positive_detections,alpr_source,geography_hint
+39.8943149,-74.96785290000001,17050.62,1.0,osm,Likely outside Philadelphia bbox east (NJ side)
+39.9488732,-74.98490049999998,10387.47,1.0,osm,Likely outside Philadelphia bbox east (NJ side)
+39.9060481,-75.0440639152841,9541.64,2.0,deflock,Near/within bbox but off centerline
+39.922873,-75.0394727,9434.75,2.0,osm,Near/within bbox but off centerline
+39.943865200000005,-75.02843219999998,7233.44,1.0,osm,Near/within bbox but off centerline
+39.9014104,-75.0654373,7183.48,2.0,osm,Near/within bbox but off centerline
+39.9016438,-75.0654789,7176.31,1.0,osm,Near/within bbox but off centerline
+39.89478489999999,-75.10141221528411,3504.06,1.0,deflock,Likely outside Philadelphia bbox south
+40.04384949999999,-74.95837299999998,2623.19,,,Likely outside Philadelphia bbox east (NJ side)
+39.91755369999999,-75.2543337,827.51,1.0,osm,Near/within bbox but off centerline
+40.0743927,-75.15388979999999,321.96,1.0,osm,Near/within bbox but off centerline
+40.01600869999999,-75.2147958,265.82,1.0,osm,Near/within bbox but off centerline
+39.9782658,-75.2235972152841,143.89,1.0,deflock,Near/within bbox but off centerline
+40.02987679999999,-75.0991106,116.68,1.0,osm,Near/within bbox but off centerline
+40.12014880000001,-74.97909889999998,110.18,1.0,osm,Likely outside Philadelphia bbox east (NJ side)

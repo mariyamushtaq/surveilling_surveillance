@@ -1,0 +1,17 @@
+{
+  "image": "kHzSoUwB1nF3ifyyw5sLcA_270.jpg",
+  "detections": [
+    {
+      "image": "kHzSoUwB1nF3ifyyw5sLcA_270.jpg",
+      "class": "Dome Camera",
+      "class_id": 1,
+      "score": 0.5921,
+      "bbox": [
+        439,
+        180,
+        448,
+        189
+      ]
+    }
+  ]
+}

@@ -18,24 +18,39 @@ theme_set(theme_bw(base_size = 14))
 road_raw <- read_csv(here::here("data", "full_run", "positive_detections.csv"))
 alpr_raw <- read_csv(here::here("data", "full_run", "combined_positive_detections.csv")) %>%
   filter(origin == "alpr")
+if (!"lat_alpr" %in% names(alpr_raw)) alpr_raw$lat_alpr <- NA_real_
+if (!"lon_alpr" %in% names(alpr_raw)) alpr_raw$lon_alpr <- NA_real_
 
 # One row per sampled GSV image (incl. zero detections); see streetview/philly_metadata.py
-meta <- read_csv(here::here("data", "philly_meta.csv"))
+# Default output from philly_metadata.py is data/input_metadata/philly_meta.csv
+meta <- read_csv(here::here("data", "input_metadata", "philly_meta.csv"))
+if (!"lat_anchor" %in% names(meta)) {
+  meta$lat_anchor <- meta$lat
+  meta$lon_anchor <- meta$lon
+}
 
 road_counts <- road_raw %>%
   group_by(panoid, lat, lon) %>%
   summarise(camera_count = n(), .groups = "drop")
 
+# Join counts on pano lat/lon (what the detector CSV uses). For maps/census we use
+# lat_anchor/lon_anchor = road-network sample sites (not GSV pano snap); see philly_metadata.py.
 df_road <- meta %>%
-  select(panoid, lat, lon) %>%
+  select(panoid, lat, lon, lat_anchor, lon_anchor) %>%
   left_join(road_counts, by = c("panoid", "lat", "lon")) %>%
   mutate(
     camera_count = replace_na(camera_count, 0),
     city         = "Philadelphia"
   )
 
+# ALPR rows: plot at crowdsourced camera sites (lat_alpr/lon_alpr), not GSV pano (lat/lon).
+# Re-run scripts/visualize_combined_detections.py if combined CSV lacks lat_alpr/lon_alpr.
 alpr_counts <- alpr_raw %>%
-  group_by(panoid, lat, lon) %>%
+  mutate(
+    plot_lat = coalesce(lat_alpr, lat),
+    plot_lon = coalesce(lon_alpr, lon)
+  ) %>%
+  group_by(plot_lat, plot_lon) %>%
   summarise(camera_count = n(), .groups = "drop") %>%
   mutate(city = "Philadelphia")
 
@@ -54,16 +69,18 @@ city_data <- tibble(
 
 ## Figure 1 — Sampled locations across Philadelphia
 ```{r sampled-map, fig.width=8, fig.height=10}
-generate_sampled_point_map(df_road, "Philadelphia")
+generate_sampled_point_map(df_road, "Philadelphia", lon_col = "lon_anchor", lat_col = "lat_anchor")
 ```
 
 ## Figure 2 — Detected surveillance cameras
 ```{r detected-map, fig.width=8, fig.height=10}
-generate_detected_point_map(df_road, "Philadelphia")
+generate_detected_point_map(df_road, "Philadelphia", lon_col = "lon_anchor", lat_col = "lat_anchor")
 ```
 
 ## Figure 3 — Camera density estimate
 ```{r density}
+# Paper estimator extrapolates from the street sample to the whole road network (see figures.R:
+# Horvitz-style scaling with recall). It is NOT the raw count of on-image bounding boxes.
 em <- df_road %>%
   summarise(
     n_pano      = n(),
@@ -73,11 +90,19 @@ em <- df_road %>%
   estimate_detection_metrics()
 
 tibble(
-  Metric = c("Detections per km (est.)", "SE", "Total cameras (est.)"),
+  Metric = c(
+    "Sample panoramas (N)",
+    "Raw positive detections in sample (sum of bbox counts)",
+    "Detections per km (est.)",
+    "SE",
+    "Total cameras — citywide estimator (NOT raw count)"
+  ),
   Value  = c(
-    round(em$est_detections_per_km, 3),
-    round(em$se_detections_per_km,  3),
-    round(em$est_detections,        0)
+    as.character(em$n_pano),
+    as.character(sum(df_road$camera_count)),
+    as.character(round(em$est_detections_per_km, 3)),
+    as.character(round(em$se_detections_per_km,  3)),
+    as.character(round(em$est_detections,        0))
   )
 ) %>%
   knitr::kable()
@@ -85,7 +110,10 @@ tibble(
 
 ## Figure 4 — Demographic correlations
 ```{r census-join}
-df_road_race <- annotate_points_with_census(df_road, "Philadelphia", "race")
+df_road_race <- annotate_points_with_census(
+  df_road, "Philadelphia", "race",
+  lon_col = "lon_anchor", lat_col = "lat_anchor"
+)
 
 df_road_race %>%
   st_drop_geometry() %>%
@@ -109,5 +137,5 @@ df_road_race %>%
 
 ## Figure 5 — ALPR sweep detections
 ```{r alpr-map, fig.width=8, fig.height=10}
-generate_detected_point_map(alpr_counts, "Philadelphia")
+generate_detected_point_map(alpr_counts, "Philadelphia", lon_col = "plot_lon", lat_col = "plot_lat")
 ```

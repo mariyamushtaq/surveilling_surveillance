@@ -1,0 +1,17 @@
+{
+  "image": "BkO5rr9rv1brYkIXsqateg_270.jpg",
+  "detections": [
+    {
+      "image": "BkO5rr9rv1brYkIXsqateg_270.jpg",
+      "class": "Dome Camera",
+      "class_id": 1,
+      "score": 0.3888,
+      "bbox": [
+        432,
+        247,
+        436,
+        254
+      ]
+    }
+  ]
+}

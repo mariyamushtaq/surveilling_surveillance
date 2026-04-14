@@ -63,6 +63,7 @@ DET_META.thing_colors = [[20, 200, 60], [11, 119, 32]]
 # ── Default paths ─────────────────────────────────────────────────────────────
 ALPR_DIR = os.path.dirname(__file__)
 DATA_DIR = os.path.join(ALPR_DIR, "data")
+FULL_RUN_DIR = os.path.join(DATA_DIR, "full_run")
 TEST_DIR = os.path.join(ALPR_DIR, "test_run")
 LOCATIONS_CSV = os.path.join(DATA_DIR, "philly_alpr_combined.csv")
 
@@ -466,7 +467,7 @@ def run(key: str,
         locations_csv: str = LOCATIONS_CSV):
     """
     Full run: download all images and run detection.
-    Output goes to alpr_data/data/.
+    Output goes to alpr_data/data/full_run/.
 
     Args:
         key:             Google API key (required)
@@ -480,10 +481,10 @@ def run(key: str,
     """
     print("=" * 60)
     print("  ALPR Pipeline — FULL RUN")
-    print(f"  Output directory: {DATA_DIR}")
+    print(f"  Output directory: {FULL_RUN_DIR}")
     print("=" * 60)
 
-    _run_pipeline(key=key, out_dir=DATA_DIR, sec=sec, ckpt_path=ckpt_path,
+    _run_pipeline(key=key, out_dir=FULL_RUN_DIR, sec=sec, ckpt_path=ckpt_path,
                   conf_threshold=conf_threshold, device=device,
                   n_images=n_images, skip_download=skip_download,
                   locations_csv=locations_csv)

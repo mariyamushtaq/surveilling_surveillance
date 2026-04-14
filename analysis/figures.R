@@ -98,13 +98,13 @@ get_max_points <- function(df){
     ) 
 }
 
-generate_sampled_point_map <- function(df, city_name){
+generate_sampled_point_map <- function(df, city_name, lon_col = "lon", lat_col = "lat"){
   road_network <- load_road_network(city_name)
   road_network_crs <- 4326
   
   pts <- df %>%
     filter(city == city_name) %>%
-    st_as_sf(coords = c("lon", "lat"), crs = road_network_crs, agr = "constant")
+    st_as_sf(coords = c(lon_col, lat_col), crs = road_network_crs, agr = "constant")
   
   bbox <- if (!is.null(road_network)) {
     st_bbox(road_network)
@@ -133,13 +133,13 @@ generate_sampled_point_map <- function(df, city_name){
   p
 }
 
-generate_detected_point_map <- function(df, city_name){
+generate_detected_point_map <- function(df, city_name, lon_col = "lon", lat_col = "lat"){
   road_network <- load_road_network(city_name)
   road_network_crs <- 4326
   
   pts <- df %>%
     filter(city == city_name, camera_count > 0) %>%
-    st_as_sf(coords = c("lon", "lat"), crs = road_network_crs, agr = "constant")
+    st_as_sf(coords = c(lon_col, lat_col), crs = road_network_crs, agr = "constant")
   
   bbox <- if (!is.null(road_network)) {
     st_bbox(road_network)
@@ -168,7 +168,8 @@ generate_detected_point_map <- function(df, city_name){
   p
 }
 
-annotate_points_with_census <- function(df, city_name, census_var){
+annotate_points_with_census <- function(df, city_name, census_var,
+                                        lon_col = "lon", lat_col = "lat"){
   stopifnot(census_var %in% c("income", "race"))
   
   # define state, county using `city_data`
@@ -230,7 +231,7 @@ annotate_points_with_census <- function(df, city_name, census_var){
     filter(city == city_name) %>%
     # ensure same coords as tidycensus
     st_as_sf(
-      coords = c("lon", "lat"),
+      coords = c(lon_col, lat_col),
       crs = 4269, 
       agr = "constant"
     )

@@ -23,6 +23,7 @@ osmnx==1.2.2
 geographiclib
 geopy
 requests
+shapely>=2.0.0
 python-pptx
 numbers-parser>=4.0.0  # optional: import visual_inspection.numbers into CSVs
 #torch==1.8.1+cu102 
