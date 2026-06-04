@@ -19,6 +19,8 @@ scikit-learn==1.0.2
 seaborn==0.10.1
 segmentation-models-pytorch
 scipy==1.7.3
+networkx>=2.6
+geopandas>=0.12.0
 osmnx==1.2.2
 geographiclib
 geopy

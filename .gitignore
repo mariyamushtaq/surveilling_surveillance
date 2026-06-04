@@ -104,6 +104,9 @@ docs/_build/
 # Raw downloaded imagery
 data/rawdata/
 
+# City boundary (can be re-downloaded)
+data/input_metadata/philadelphia_city_wgs84.geojson
+
 # Surveillance pipeline outputs
 data/centercity/images/
 data/centercity/detections/
@@ -112,6 +115,7 @@ data/full_run/images/
 data/full_run/detections/
 data/full_run/visualizations/
 data/full_run/visualizations_combined/
+data/philly_combined_revision/
 data/threshold_analysis/images/
 data/threshold_analysis/detections/
 data/threshold_analysis/all_detections.csv
@@ -137,3 +141,15 @@ philly_surveillance_feb/
 
 # Local thesis / presentation (large binary)
 thesis_update_presentation.pptx
+Thesis_Presentation*.pptx
+~$*.pptx
+
+# --- Cleanup folder (local only) ---
+cleanup/
+
+# --- Screenshots & temp files ---
+Screenshot*.png
+
+# --- Generated R outputs ---
+analysis/*.html
+!analysis/results_philly_combined_revision.html

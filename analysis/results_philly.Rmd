@@ -16,7 +16,7 @@ theme_set(theme_bw(base_size = 14))
 ```
 ```{r load-and-prep}
 road_raw <- read_csv(here::here("data", "full_run", "positive_detections.csv"))
-alpr_raw <- read_csv(here::here("data", "full_run", "combined_positive_detections.csv")) %>%
+alpr_raw <- read_csv(here::here("data", "philly_combined_revision", "combined_positive_detections.csv")) %>%
   filter(origin == "alpr")
 if (!"lat_alpr" %in% names(alpr_raw)) alpr_raw$lat_alpr <- NA_real_
 if (!"lon_alpr" %in% names(alpr_raw)) alpr_raw$lon_alpr <- NA_real_
@@ -24,10 +24,8 @@ if (!"lon_alpr" %in% names(alpr_raw)) alpr_raw$lon_alpr <- NA_real_
 # One row per sampled GSV image (incl. zero detections); see streetview/philly_metadata.py
 # Default output from philly_metadata.py is data/input_metadata/philly_meta.csv
 meta <- read_csv(here::here("data", "input_metadata", "philly_meta.csv"))
-if (!"lat_anchor" %in% names(meta)) {
-  meta$lat_anchor <- meta$lat
-  meta$lon_anchor <- meta$lon
-}
+if (!"lat_anchor" %in% names(meta)) meta$lat_anchor <- meta$lat
+if (!"lon_anchor" %in% names(meta)) meta$lon_anchor <- meta$lon
 
 road_counts <- road_raw %>%
   group_by(panoid, lat, lon) %>%
@@ -43,8 +41,11 @@ df_road <- meta %>%
     city         = "Philadelphia"
   )
 
+if (!"lat_anchor" %in% names(df_road)) df_road$lat_anchor <- df_road$lat
+if (!"lon_anchor" %in% names(df_road)) df_road$lon_anchor <- df_road$lon
+
 # ALPR rows: plot at crowdsourced camera sites (lat_alpr/lon_alpr), not GSV pano (lat/lon).
-# Re-run scripts/visualize_combined_detections.py if combined CSV lacks lat_alpr/lon_alpr.
+# Re-run scripts/visualize_combined_detections.py (writes data/philly_combined_revision/) if needed.
 alpr_counts <- alpr_raw %>%
   mutate(
     plot_lat = coalesce(lat_alpr, lat),

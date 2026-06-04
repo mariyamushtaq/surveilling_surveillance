@@ -1,0 +1,608 @@
+---
+title: "Philadelphia — Results (combined revision)"
+subtitle: "ALPR rows from `data/philly_combined_revision/` (valid Philly ALPR + full-run surveillance merge)"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  dev = "png",
+  dpi = 300,
+  fig.path = "output/results_philly_combined_revision-"
+)
+```
+
+```{r load-libraries}
+library(tidyverse)
+library(sf)
+library(here)
+library(tidycensus)
+library(pscl)  # For zero-inflated Poisson
+library(kableExtra)
+
+source(here::here("analysis", "figures.R"))
+theme_set(theme_bw(base_size = 14))
+```
+
+# 1. Data Loading and Preparation
+
+```{r load-and-prep}
+# Load detection data (full run: road-network sweep)
+road_raw <- read_csv(here::here("data", "full_run", "positive_detections.csv"))
+
+# Load ALPR detections (subset: ALPR-targeted sweep)
+alpr_raw <- read_csv(here::here("data", "philly_combined_revision", "combined_positive_detections.csv")) %>%
+  filter(origin == "alpr")
+if (!"lat_alpr" %in% names(alpr_raw)) alpr_raw$lat_alpr <- NA_real_
+if (!"lon_alpr" %in% names(alpr_raw)) alpr_raw$lon_alpr <- NA_real_
+
+# Load metadata: one row per sampled GSV image (includes zero detections)
+# Metadata includes both pano coordinates (lat/lon) and anchor coordinates (lat_anchor/lon_anchor)
+# Anchor = actual road-network sample site; pano = GSV projection (slightly offset)
+meta <- read_csv(here::here("data", "input_metadata", "philly_meta.csv"))
+if (!"lat_anchor" %in% names(meta)) meta$lat_anchor <- meta$lat
+if (!"lon_anchor" %in% names(meta)) meta$lon_anchor <- meta$lon
+
+# Aggregate detections by image (panoid, pano lat/lon)
+road_counts <- road_raw %>%
+  group_by(panoid, lat, lon) %>%
+  summarise(camera_count = n(), .groups = "drop")
+
+# Join detection counts with metadata
+# Use pano coordinates for the join, but keep anchor coordinates for mapping and census operations
+df_road <- meta %>%
+  select(panoid, lat, lon, lat_anchor, lon_anchor) %>%
+  left_join(road_counts, by = c("panoid", "lat", "lon")) %>%
+  mutate(
+    camera_count = replace_na(camera_count, 0),
+    city         = "Philadelphia"
+  )
+
+# Ensure anchor columns exist (defensive coding for edge cases)
+if (!"lat_anchor" %in% names(df_road)) df_road$lat_anchor <- df_road$lat
+if (!"lon_anchor" %in% names(df_road)) df_road$lon_anchor <- df_road$lon
+
+# ALPR detections: aggregate by crowdsourced camera site (lat_alpr/lon_alpr, not GSV pano)
+alpr_counts <- alpr_raw %>%
+  mutate(
+    plot_lat = coalesce(lat_alpr, lat),
+    plot_lon = coalesce(lon_alpr, lon)
+  ) %>%
+  group_by(plot_lat, plot_lon) %>%
+  summarise(camera_count = n(), .groups = "drop") %>%
+  mutate(city = "Philadelphia")
+
+# City metadata
+city_data <- tibble(
+  city                   = "Philadelphia",
+  type                   = "US",
+  state                  = "PA",
+  county                 = "Philadelphia County",
+  road_network_length_km = 6089,
+  m_per_pano             = 2 * road_network_length_km * 1000 / nrow(meta),
+  population_census2010  = 1526006
+)
+
+message("Road-network sample: ", nrow(df_road), " images, ",
+        sum(df_road$camera_count), " detections")
+message("ALPR sample: ", nrow(alpr_counts), " camera sites, ",
+        sum(alpr_counts$camera_count), " detections")
+```
+
+---
+
+# 2. Spatial Distributions
+
+## Figure 1 — Sampled locations across Philadelphia
+
+```{r sampled-map, fig.width=8, fig.height=10}
+generate_sampled_point_map(df_road, "Philadelphia", lon_col = "lon_anchor", lat_col = "lat_anchor")
+```
+
+---
+
+## Figure 2 — Detected surveillance cameras (road-network sweep)
+
+```{r detected-map, fig.width=8, fig.height=10}
+generate_detected_point_map(df_road, "Philadelphia", lon_col = "lon_anchor", lat_col = "lat_anchor")
+```
+
+---
+
+## Figure 3 — Camera density estimate (road-network sample)
+
+```{r density}
+# Extrapolate from street-network sample to whole network using Horvitz-style scaling
+# See figures.R:estimate_detection_metrics() for the estimator details
+# This is NOT a raw count; it's a population estimate accounting for sampling design
+
+em <- df_road %>%
+  summarise(
+    n_pano      = n(),
+    n_detection = sum(camera_count)
+  ) %>%
+  mutate(city = "Philadelphia", period = "2024") %>%
+  estimate_detection_metrics()
+
+tibble(
+  Metric = c(
+    "Sample panoramas (N)",
+    "Raw positive detections in sample (sum of bbox counts)",
+    "Detections per km (est.)",
+    "SE",
+    "Total cameras — citywide estimator (NOT raw count)"
+  ),
+  Value  = c(
+    as.character(em$n_pano),
+    as.character(sum(df_road$camera_count)),
+    as.character(round(em$est_detections_per_km, 3)),
+    as.character(round(em$se_detections_per_km,  3)),
+    as.character(round(em$est_detections,        0))
+  )
+) %>%
+  knitr::kable()
+```
+
+---
+
+# 3. Demographic Analysis: Block-Group Aggregation and Regression
+
+```{r load-demographics}
+# Load census block-group demographics (2020–2024 ACS 5-year, already computed by pull_philly_demographics.R)
+# Includes: Shannon entropy, percentage_minority, income, poverty, unemployment, occupancy, education
+# Filtered to block groups within Philadelphia city boundaries
+
+acs_demo <- st_read(
+  here::here("data", "philly_combined_revision", "acs_philly_bg_2020_2024.gpkg"),
+  quiet = TRUE
+)
+
+message("Loaded ", nrow(acs_demo), " census block groups with demographics")
+```
+
+---
+
+```{r spatial-join}
+# Spatial join: map detection points (lat_anchor/lon_anchor) to census block groups
+# This assigns each GSV image to its block group, inheriting block-group covariates
+
+df_road_sf <- df_road %>%
+  st_as_sf(coords = c("lon_anchor", "lat_anchor"), crs = 4326)
+
+# Join to block groups; keep GEOID for aggregation
+detection_to_bg <- df_road_sf %>%
+  st_join(acs_demo %>% select(GEOID), left = TRUE) %>%
+  st_drop_geometry()
+
+# Check for unmatched points (should be minimal if city polygon was clean)
+unmatched <- sum(is.na(detection_to_bg$GEOID))
+if (unmatched > 0) {
+  warning(unmatched, " detection points fell outside any block group.",
+          " These will be excluded from regression.")
+}
+
+message("Detection points joined to block groups: ",
+        nrow(detection_to_bg) - unmatched, " / ", nrow(detection_to_bg))
+```
+
+---
+
+```{r aggregate-to-blockgroup}
+# Aggregate detections to block group level
+# One row per block group: total detections + number of images sampled
+
+detections_by_bg <- detection_to_bg %>%
+  filter(!is.na(GEOID)) %>%  # Exclude unmatched points
+  group_by(GEOID) %>%
+  summarise(
+    camera_count = sum(camera_count, na.rm = TRUE),
+    n_images = n(),
+    .groups = "drop"
+  )
+
+message("Detections aggregated to ", nrow(detections_by_bg), " block groups")
+```
+
+---
+
+```{r prepare-regression-data}
+# Join aggregated detections with block-group demographics
+# Filter to block groups with valid Shannon entropy (mandatory predictor)
+
+df_regression <- detections_by_bg %>%
+  left_join(
+    acs_demo %>% 
+      st_drop_geometry() %>% 
+      select(
+        GEOID,
+        shannon_entropy,
+        percentage_minority,
+        estimate__median_household_income,
+        poverty_rate,
+        unemployment_rate,
+        occupancy_rate,
+        bachelors_or_higher_rate,
+        estimate__total_pop
+      ),
+    by = "GEOID"
+  ) %>%
+  # Exclude block groups with missing Shannon entropy or population = 0
+  filter(!is.na(shannon_entropy), estimate__total_pop > 0) %>%
+  # Standardize all continuous predictors to mean=0, sd=1
+  # This allows coefficients to be compared on a common scale and IRRs to be interpreted
+  # per one standard deviation increase in each predictor
+  mutate(
+    across(
+      c(shannon_entropy, percentage_minority, estimate__median_household_income,
+        poverty_rate, unemployment_rate, occupancy_rate, 
+        bachelors_or_higher_rate),
+      list(std = ~(. - mean(., na.rm = TRUE)) / sd(., na.rm = TRUE)),
+      .names = "{.col}_std"
+    )
+  )
+
+message("Regression dataset: ", nrow(df_regression), " block groups")
+message("Camera count range: ", min(df_regression$camera_count), " — ", 
+        max(df_regression$camera_count))
+message("Zero-count block groups: ", sum(df_regression$camera_count == 0))
+```
+
+---
+
+```{r fit-zip-model}
+# Fit zero-inflated Poisson regression
+# Outcome: camera_count per block group
+# Model decomposition:
+#   - Count model (Poisson): models positive detections given a camera is present
+#   - Zero-inflation model (logit): models probability block group is "structural zero"
+#     (no cameras for reasons outside our predictors: e.g., entirely parkland, water, etc.)
+# 
+# Formula: count_model | zero_inflation_model
+# Here: full model for counts | intercept-only for zero-inflation
+# (This assumes zero-inflation is constant across block groups, not predicted by covariates)
+
+zip_model <- zeroinfl(
+  camera_count ~ shannon_entropy_std + percentage_minority_std + 
+                  estimate__median_household_income_std + 
+                  poverty_rate_std + 
+                  unemployment_rate_std + 
+                  occupancy_rate_std + 
+                  bachelors_or_higher_rate_std | 1,
+  data = df_regression,
+  dist = "poisson"
+)
+
+summary_zip <- summary(zip_model)
+print(summary_zip)
+```
+
+---
+
+```{r extract-zip-coefficients}
+# Extract count-model coefficients and compute incidence rate ratios (IRRs)
+# IRR = exp(coefficient) = multiplicative change in expected count per 1 SD increase in predictor
+
+count_coefs <- summary_zip$coefficients$count
+count_coefs_df <- as.data.frame(count_coefs) %>%
+  rownames_to_column("Predictor") %>%
+  mutate(
+    IRR = exp(Estimate),
+    `IRR_95%_CI_Lower` = exp(Estimate - 1.96 * `Std. Error`),
+    `IRR_95%_CI_Upper` = exp(Estimate + 1.96 * `Std. Error`),
+    Sig = case_when(
+      `Pr(>|z|)` < 0.001 ~ "***",
+      `Pr(>|z|)` < 0.01  ~ "**",
+      `Pr(>|z|)` < 0.05  ~ "*",
+      `Pr(>|z|)` < 0.10  ~ ".",
+      TRUE                ~ ""
+    )
+  ) %>%
+  select(Predictor, Estimate, `Std. Error`, IRR, `IRR_95%_CI_Lower`, `IRR_95%_CI_Upper`, 
+         `Pr(>|z|)`, Sig)
+
+# Also extract zero-inflation model coefficients (usually intercept-only here)
+zero_coefs <- summary_zip$coefficients$zero
+zero_coefs_df <- as.data.frame(zero_coefs) %>%
+  rownames_to_column("Predictor") %>%
+  select(Predictor, Estimate = "Estimate", `Std. Error`, Sig = "Pr(>|z|)")
+```
+
+---
+
+## Table 1 — Zero-Inflated Poisson Regression Results (Count Model)
+
+```{r table-regression}
+kable(
+  count_coefs_df,
+  digits = 4,
+  caption = "Zero-Inflated Poisson Regression Results (Count Model Component). 
+             Dependent variable: count of detected surveillance devices per census block group. 
+             All predictors standardized to mean=0, SD=1. 
+             IRR = incidence rate ratio = exp(coefficient). 
+             Interpretation: IRR > 1 indicates expected count increases with predictor; IRR < 1 indicates decrease. 
+             Standard errors and significance tests account for survey design via sandwich estimator (if applicable)."
+) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+```
+
+---
+
+```{r model-diagnostics}
+# Model fit statistics
+loglik <- as.numeric(logLik(zip_model))
+aic <- AIC(zip_model)
+bic <- BIC(zip_model)
+
+# Deviance
+deviance_val <- deviance(zip_model)
+zi_estimate <- suppressWarnings(as.numeric(zero_coefs_df$Estimate[1]))
+zi_se <- suppressWarnings(as.numeric(zero_coefs_df$`Std. Error`[1]))
+safe_round_chr <- function(x, digits = 2) {
+  num <- suppressWarnings(as.numeric(x))
+  if (length(num) == 0) return(NA_character_)
+  if (is.na(num)) return(NA_character_)
+  as.character(round(num, digits))
+}
+
+tibble(
+  Statistic = c(
+    "Log-likelihood",
+    "AIC",
+    "BIC",
+    "Deviance",
+    "N block groups",
+    "Zero-count block groups",
+    "Zero-inflation intercept",
+    "Zero-inflation SE"
+  ),
+  Value = c(
+    safe_round_chr(loglik, 2),
+    safe_round_chr(aic, 2),
+    safe_round_chr(bic, 2),
+    safe_round_chr(deviance_val, 2),
+    as.character(nrow(df_regression)),
+    as.character(sum(df_regression$camera_count == 0)),
+    safe_round_chr(zi_estimate, 4),
+    safe_round_chr(zi_se, 4)
+  )
+) %>%
+  knitr::kable()
+```
+
+---
+
+# 4. Bivariate Relationships (Exploratory)
+
+```{r bivariate-prep}
+# Add back standardized predictors for plotting bivariate relationships
+# Join the standardized versions with original scales for interpretability on plots
+
+df_bivariate <- df_regression %>%
+  select(
+    GEOID, camera_count, n_images,
+    shannon_entropy, percentage_minority,
+    estimate__median_household_income,
+    poverty_rate, unemployment_rate, occupancy_rate, bachelors_or_higher_rate
+  )
+
+# Compute identification rate: detections per image sampled in that block group
+# This normalizes for sampling intensity differences across block groups
+df_bivariate <- df_bivariate %>%
+  mutate(
+    identification_rate = if_else(n_images > 0, camera_count / n_images, NA_real_)
+  )
+```
+
+---
+
+## Figure 4a — Camera Detection Rate vs. Shannon Entropy
+
+```{r bivariate-entropy, fig.width=7, fig.height=5}
+df_bivariate %>%
+  ggplot(aes(x = shannon_entropy, y = identification_rate)) +
+  geom_point(alpha = 0.4, size = 2, color = "steelblue") +
+  geom_smooth(
+    method = "lm",
+    formula = y ~ x,
+    se = TRUE,
+    fill = "lightblue",
+    color = "darkblue",
+    linewidth = 0.8
+  ) +
+  scale_x_continuous(
+    name = "Shannon Entropy (racial/ethnic diversity)",
+    breaks = seq(0, 2, by = 0.5)
+  ) +
+  scale_y_continuous(
+    name = "Detection Rate (detections per image)"
+  ) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(size = 0.2, color = "gray90"),
+    panel.border = element_blank(),
+    axis.line = element_line(size = 0.5, color = "black")
+  ) +
+  labs(
+    title = "Surveillance Density vs. Neighborhood Diversity",
+    subtitle = "Bivariate relationship (exploratory); not controlling for other covariates"
+  )
+```
+
+---
+
+## Figure 4b — Camera Detection Rate vs. Percentage Minority
+
+```{r bivariate-minority, fig.width=7, fig.height=5}
+df_bivariate %>%
+  ggplot(aes(x = percentage_minority, y = identification_rate)) +
+  geom_point(alpha = 0.4, size = 2, color = "darkred") +
+  geom_smooth(
+    method = "lm",
+    formula = y ~ x,
+    se = TRUE,
+    fill = "mistyrose",
+    color = "darkred",
+    linewidth = 0.8
+  ) +
+  scale_x_continuous(
+    name = "Percentage Non-White Residents",
+    labels = scales::percent_format(accuracy = 1),
+    breaks = seq(0, 1, by = 0.2)
+  ) +
+  scale_y_continuous(
+    name = "Detection Rate (detections per image)"
+  ) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(size = 0.2, color = "gray90"),
+    panel.border = element_blank(),
+    axis.line = element_line(size = 0.5, color = "black")
+  ) +
+  labs(
+    title = "Surveillance Density vs. Minority Population Share",
+    subtitle = "Bivariate relationship (exploratory); not controlling for other covariates"
+  )
+```
+
+---
+
+## Figure 4c — Camera Detection Rate vs. Median Household Income
+
+```{r bivariate-income, fig.width=7, fig.height=5}
+df_bivariate %>%
+  ggplot(aes(x = estimate__median_household_income, y = identification_rate)) +
+  geom_point(alpha = 0.4, size = 2, color = "darkgreen") +
+  geom_smooth(
+    method = "lm",
+    formula = y ~ x,
+    se = TRUE,
+    fill = "honeydew",
+    color = "darkgreen",
+    linewidth = 0.8
+  ) +
+  scale_x_continuous(
+    name = "Median Household Income ($)",
+    labels = scales::dollar_format()
+  ) +
+  scale_y_continuous(
+    name = "Detection Rate (detections per image)"
+  ) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(size = 0.2, color = "gray90"),
+    panel.border = element_blank(),
+    axis.line = element_line(size = 0.5, color = "black")
+  ) +
+  labs(
+    title = "Surveillance Density vs. Economic Status",
+    subtitle = "Bivariate relationship (exploratory); not controlling for other covariates"
+  )
+```
+
+---
+
+## Figure 4d — Camera Detection Rate vs. Poverty Rate
+
+```{r bivariate-poverty, fig.width=7, fig.height=5}
+df_bivariate %>%
+  ggplot(aes(x = poverty_rate, y = identification_rate)) +
+  geom_point(alpha = 0.4, size = 2, color = "purple") +
+  geom_smooth(
+    method = "lm",
+    formula = y ~ x,
+    se = TRUE,
+    fill = "thistle",
+    color = "purple",
+    linewidth = 0.8
+  ) +
+  scale_x_continuous(
+    name = "Poverty Rate",
+    labels = scales::percent_format(accuracy = 1)
+  ) +
+  scale_y_continuous(
+    name = "Detection Rate (detections per image)"
+  ) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(size = 0.2, color = "gray90"),
+    panel.border = element_blank(),
+    axis.line = element_line(size = 0.5, color = "black")
+  ) +
+  labs(
+    title = "Surveillance Density vs. Economic Distress",
+    subtitle = "Bivariate relationship (exploratory); not controlling for other covariates"
+  )
+```
+
+---
+
+# 5. ALPR Sweep (Targeted Camera Locations)
+
+## Figure 5 — ALPR Camera Detections
+
+```{r alpr-map, fig.width=8, fig.height=10}
+generate_detected_point_map(alpr_counts, "Philadelphia", lon_col = "plot_lon", lat_col = "plot_lat")
+```
+
+---
+
+# 6. Summary of Findings
+
+## Key Regression Results
+
+```{r significant-results}
+sig_results <- count_coefs_df %>%
+  filter(Predictor != "(Intercept)", `Pr(>|z|)` < 0.05) %>%
+  mutate(Direction = if_else(IRR > 1, "Higher expected camera count", "Lower expected camera count")) %>%
+  select(Predictor, IRR, `Pr(>|z|)`, Direction)
+
+if (nrow(sig_results) == 0) {
+  knitr::kable(tibble(Note = "No predictors were significant at p < 0.05 in the count model."))
+} else {
+  knitr::kable(
+    sig_results,
+    digits = 4,
+    caption = "Significant predictors from the count model (p < 0.05)."
+  )
+}
+```
+
+---
+
+# 7. Appendix: Data Quality Notes
+
+```{r data-quality-summary}
+tibble(
+  Aspect = c(
+    "Road-network sample",
+    "Total unique detections",
+    "Block groups in regression",
+    "Zero-count block groups",
+    "Median detections per BG",
+    "Max detections per BG",
+    "Shannon entropy range",
+    "Percentage minority range"
+  ),
+  Value = c(
+    paste(nrow(df_road), "images"),
+    paste(sum(df_road$camera_count), "bounding boxes"),
+    as.character(nrow(df_regression)),
+    paste(sum(df_regression$camera_count == 0), 
+          "(", round(100 * sum(df_regression$camera_count == 0) / nrow(df_regression), 1), "%)"),
+    paste(round(median(df_regression$camera_count), 1)),
+    paste(max(df_regression$camera_count)),
+    paste(round(min(df_regression$shannon_entropy), 2), "–", 
+          round(max(df_regression$shannon_entropy), 2)),
+    paste(round(min(df_regression$percentage_minority), 2), "–", 
+          round(max(df_regression$percentage_minority), 2))
+  )
+) %>%
+  knitr::kable(caption = "Summary Statistics: Road-Network Sample and Regression Data")
+```
+

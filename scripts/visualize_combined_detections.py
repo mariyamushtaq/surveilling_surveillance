@@ -6,8 +6,8 @@ Merge Philly full-run positive detections with ALPR detections and plot together
   so scales match the surveillance full run.
 
 Writes:
-  data/full_run/combined_positive_detections.csv
-  data/full_run/visualizations_combined/*.png (+ optional annotated/)
+  data/philly_combined_revision/combined_positive_detections.csv
+  data/philly_combined_revision/visualizations_combined/*.png (+ optional annotated/)
 
 Usage (from repository root):
   python scripts/visualize_combined_detections.py
@@ -36,18 +36,19 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 DEFAULT_PHILLY_CSV = os.path.join(PROJECT_ROOT, "data", "full_run", "positive_detections.csv")
 DEFAULT_ALPR_DET = os.path.join(
-    PROJECT_ROOT, "alpr_data", "threshold_analysis", "all_detections.csv"
+    PROJECT_ROOT, "alpr_data", "data", "full_run", "detection_summary.csv"
 )
 DEFAULT_ALPR_META = os.path.join(
-    PROJECT_ROOT, "alpr_data", "threshold_analysis", "alpr_meta.csv"
+    PROJECT_ROOT, "alpr_data", "data", "full_run", "alpr_meta.csv"
 )
 DEFAULT_PHILLY_IMAGES = os.path.join(PROJECT_ROOT, "data", "full_run", "images")
 DEFAULT_ALPR_IMAGES = os.path.join(
-    PROJECT_ROOT, "alpr_data", "threshold_analysis", "images"
+    PROJECT_ROOT, "alpr_data", "data", "full_run", "images"
 )
-DEFAULT_OUT = os.path.join(PROJECT_ROOT, "data", "full_run", "visualizations_combined")
+DEFAULT_REVISION_DIR = os.path.join(PROJECT_ROOT, "data", "philly_combined_revision")
+DEFAULT_OUT = os.path.join(DEFAULT_REVISION_DIR, "visualizations_combined")
 DEFAULT_COMBINED_CSV = os.path.join(
-    PROJECT_ROOT, "data", "full_run", "combined_positive_detections.csv"
+    DEFAULT_REVISION_DIR, "combined_positive_detections.csv"
 )
 
 

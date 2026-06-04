@@ -1,0 +1,22 @@
+Anonymity Penalty Summary
+────────────────────────────────────────────────────
+radius=50.0 m  |  λ=500.0  |  min OD dist=1000.0 m  |  n=99
+
+AP absolute (extra metres):
+  mean    233.9 m
+  median  163.9 m
+  p75     351.2 m
+  p90     539.0 m
+  max     1150.7 m
+  AP = 0  22 pairs (22.2%)
+
+AP relative (% detour over shortest):
+  mean    1.52%
+  median  0.99%
+  p90     3.78%
+  max     7.80%
+
+Surveillance cost: shortest → privacy route:
+  mean reduction    2.2761
+  median reduction  1.9336
+  pairs where privacy route = shortest: 22
