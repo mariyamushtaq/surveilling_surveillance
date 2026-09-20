@@ -5,6 +5,11 @@ Thumbs.db
 *.swo
 .idea/
 .vscode/
+.cursor/
+.github/
+
+# --- Apple Numbers files ---
+*.numbers
 
 # --- Python ---
 __pycache__/

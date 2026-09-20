@@ -54,18 +54,22 @@ python -m alpr_data.run_alpr_pipeline --key YOUR_API_KEY --skip_download
 ```
 alpr_data/
 ├── data/
-│   ├── philly_alpr_osm.csv          # OSM ALPR locations
-│   ├── philly_alpr_deflock.csv      # DeFlock ALPR locations
-│   ├── philly_alpr_combined.csv     # Merged & deduplicated locations
-│   ├── alpr_meta.csv                # GSV metadata (panoid, heading, coords)
-│   ├── detection_summary.csv        # All detections across all images
-│   ├── alpr_location_detections.csv # Per-ALPR-location detection counts
-│   ├── images/                      # Downloaded Street View images
-│   └── detections/                  # Annotated images + per-image JSON
+│   ├── philly_alpr_osm.csv           # OSM ALPR locations
+│   ├── philly_alpr_deflock.csv       # DeFlock ALPR locations
+│   ├── philly_alpr_combined.csv      # Merged & deduplicated
+│   └── full_run/                     # Pipeline outputs
+│       ├── alpr_meta.csv             # GSV metadata (panoid, heading, coords)
+│       ├── detection_summary.csv     # All detections
+│       ├── alpr_location_detections.csv  # Per-location counts
+│       ├── images/                   # Downloaded images (gitignored)
+│       └── detections/               # Annotated images (gitignored)
 ├── fetch_alpr_data.py
 ├── run_alpr_pipeline.py
+├── run_alpr_threshold_analysis.py
 └── README.md
 ```
+
+**Note:** Images and detection outputs are not tracked in git. Run the pipeline with your own API key to generate them.
 
 ## Data Format
 
