@@ -30,8 +30,6 @@ import multiprocessing as mp
 from tqdm import tqdm
 from geographiclib.geodesic import Geodesic
 
-# ── Setup ────────────────────────────────────────────────────────────────────
-
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s  %(levelname)s  %(message)s")
 log = logging.getLogger(__name__)
@@ -39,8 +37,6 @@ log = logging.getLogger(__name__)
 PLACE = "Philadelphia, Pennsylvania, USA"
 SV_METADATA_URL = "https://maps.googleapis.com/maps/api/streetview/metadata"
 
-
-# ── Step 1: Sample points on the road network ───────────────────────────────
 
 def _get_heading(lat1, lon1, lat2, lon2):
     """Geodesic heading from point 1 to point 2."""
@@ -112,8 +108,6 @@ def sample_road_points(n_points=10000, min_spacing=None, seed=42):
     log.info("Sampled %d points", len(rows))
     return pd.DataFrame(rows)
 
-
-# ── Step 2: Query the Street View Metadata API ──────────────────────────────
 
 def _init_worker(api_key):
     global _api_key
@@ -200,8 +194,6 @@ def fetch_panorama_ids(points_df, api_key, n_threads=10):
     return meta
 
 
-# ── Step 3: Build the deploy-ready CSV ───────────────────────────────────────
-
 def build_deploy_csv(meta, image_dir="./data/rawdata/image"):
     """
     From the raw metadata, produce a CSV that matches the format expected by
@@ -238,8 +230,6 @@ def build_deploy_csv(meta, image_dir="./data/rawdata/image"):
     return df[keep_cols].reset_index(drop=True)
 
 
-# ── CLI entry point ──────────────────────────────────────────────────────────
-
 def generate_philly_metadata(
     key: str,
     n_points: int = 10000,
@@ -259,15 +249,8 @@ def generate_philly_metadata(
         output_path:  Where to write the final CSV
         seed:         Random seed for reproducibility
     """
-    # Step 1 — sample points
-    points = sample_road_points(n_points=n_points,
-                                min_spacing=min_spacing,
-                                seed=seed)
-
-    # Step 2 — get panorama IDs
+    points = sample_road_points(n_points=n_points, min_spacing=min_spacing, seed=seed)
     meta = fetch_panorama_ids(points, api_key=key, n_threads=n_threads)
-
-    # Step 3 — format and save
     deploy_df = build_deploy_csv(meta)
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
     deploy_df.to_csv(output_path, index=False)

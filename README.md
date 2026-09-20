@@ -1,12 +1,13 @@
 # Surveilling Surveillance: Estimating the Prevalence of Surveillance Cameras with Street View Data
-### [Project page](https://policylab.stanford.edu/surveillance/) |   [Paper](https://arxiv.org/abs/2105.01764)
+
+### [Project page](https://policylab.stanford.edu/surveillance/) | [Paper](https://arxiv.org/abs/2105.01764)
 
 ![detections](.github/image/detections.png)
-__Locations of verified cameras in 10 large U.S. cities for the period 2016–2020. Densely clustered areas of points indicate regions with high camera density in each city. Camera density varies widely between neighborhoods. Note: Scale varies
-between cities.__
+*Locations of verified cameras in 10 large U.S. cities for the period 2016–2020.*
 
-This is the code base of our [Surveilling Surveillance](https://arxiv.org/abs/2105.01764) paper:
-```
+This repository extends [Surveilling Surveillance](https://arxiv.org/abs/2105.01764) (Sheng et al., 2021) with Philadelphia-specific analysis, ALPR camera detection, demographic regression, and anonymity penalty routing.
+
+```bibtex
 @article{sheng2021surveilling,
   title={Surveilling Surveillance: Estimating the Prevalence of Surveillance Cameras with Street View Data},
   author={Sheng, Hao and Yao, Keniel and Goel, Sharad},
@@ -15,71 +16,134 @@ This is the code base of our [Surveilling Surveillance](https://arxiv.org/abs/21
 }
 ```
 
-## Camera Detection
-### Requirements
-- Linux or macOS with Python ≥ 3.6
-- [PyTorch](https://pytorch.org/) ≥ 1.6 and [torchvision](https://github.com/pytorch/vision/) that matches the PyTorch installation. Install them together at [pytorch.org](https://pytorch.org/) to make sure of this
-- [Detection2](https://github.com/facebookresearch/detectron2). The installation instruction of Detection2 can be found [here](https://detectron2.readthedocs.io/en/latest/tutorials/install.html)
+---
 
-Install Python dependencies by running:
-```shell
+## Quick Start
+
+### Requirements
+
+- Python ≥ 3.6 (macOS or Linux)
+- [PyTorch](https://pytorch.org/) ≥ 1.6 + [torchvision](https://github.com/pytorch/vision/)
+- [Detectron2](https://github.com/facebookresearch/detectron2)
+- R + tidyverse, sf, pscl (for analysis scripts)
+
+### Installation
+
+```bash
 pip install -r requirements.txt
 ```
 
-### Download street-view images
-```shell
-python main.py download_streetview_image --key GOOGLE_API_KEY --sec GOOGLE_API_SECRET
+### Download Pre-trained Model
+
+Download the [FasterRCNN model](https://storage.googleapis.com/scpl-surveillance/model.zip) (472 MB) and extract to `detection/model/`.
+
+---
+
+## Repository Structure
+
+```
+├── detection/           # FasterRCNN camera detection model
+├── streetview/          # Street View image download & sampling
+├── scripts/             # Pipeline runners
+├── analysis/            # R analysis scripts
+│   ├── results_philly_combined_revision.Rmd   # Philadelphia regression
+│   ├── pull_philly_demographics.R             # Census data pipeline
+│   └── output/                                # Generated figures
+├── alpr_data/           # ALPR camera detection pipeline
+├── anonymity_penalty/   # Surveillance-aware routing
+├── outputs/             # Result figures
+├── data/                # Metadata & results (images not included)
+└── plot/                # Visualization modules
 ```
 
-### Model training
-```shell
-cd detection && python main.py train --exp_name EXPERIMENT_NAME --[hyparameter] [value]
+**Note:** Street View images and large data files are not included. Run the pipelines with your own Google API key to download imagery.
+
+---
+
+## Camera Detection
+
+### Download Street View Images
+
+```bash
+python main.py download_streetview_image --key YOUR_API_KEY --sec YOUR_SIGNING_SECRET
 ```
 
-### Model inference
-```shell
-cd detection && python main.py test --deploy --deploy_meta_path [DEPLOY_META_PATH]
+### Train Model
+
+```bash
+cd detection && python main.py train --exp_name EXPERIMENT_NAME
 ```
-, where `DEPLOY_META_PATH` is a path to a csv file of the following format:
 
-| save_path | panoid | heading | downloaded |
-| --------- | ------ | ------- | ---------- |
-| /dY/5I/l8/4NW89-ChFSP71GiA/344.png | dY5Il84NW89-ChFSP71GiA | -105.55188877562128 | True | 
-| ... | | |
+### Run Inference
 
-Here, `panoid` and `heading` refer to the ID and heading of each street-view image. 
+```bash
+cd detection && python main.py test --deploy --deploy_meta_path PATH_TO_META.csv
+```
 
+---
 
-## Analysis
-To reproduce the figures and tables in our paper, run the `analysis/results.Rmd` script. 
+## Philadelphia Analysis
 
-You'll need to download our camera and road network data [available here](https://storage.googleapis.com/scpl-surveillance/camera-data.zip) into a `data` directory in the root of this repository.
+### 1. ALPR Data Pipeline
 
-## Artifacts
+Fetch ALPR camera locations from crowdsourced databases and run detection:
 
-### Annotations
+```bash
+python -m alpr_data.fetch_alpr_data
+python -m alpr_data.run_alpr_pipeline --key YOUR_API_KEY
+```
 
-Our collected camera annotations can be downloaded as follows:
+### 2. Demographic Regression
 
-| #images | # cameras   | link | md5 |
-| ------- | :---------: | ---- | --- |
-| 3,155    | 1,696      | [download](https://storage.googleapis.com/scpl-surveillance/meta.csv) | `b2340143c6af2d1e6bfefd5001fd94c1` |
+Model camera prevalence against census block-group demographics using zero-inflated Poisson regression:
 
-- *2021-5-20: This dataset is larger than the one reported in the paper as we include verified examples from our pilot.*
-- *2021-5-18: The metadata can also be found in this repo as `./data/input_metadata/meta.csv`*. 
+```bash
+# Set Census API key
+export CENSUS_API_KEY='your_key'
 
-### Pre-trained Models
+# Pull demographics
+Rscript analysis/pull_philly_demographics.R
 
-Our pre-trained camera detection model can be downloaded as follows:
+# Run analysis
+Rscript -e "rmarkdown::render('analysis/results_philly_combined_revision.Rmd')"
+```
 
-| architecture  | Size  | link         | md5 |
-| ------------  | ----- | ----         | --- |
-| FasterRCNN    | 472 Mb| [download](https://storage.googleapis.com/scpl-surveillance/model.zip) | `dba44ad36340d3291102e72b340568a0` |
+Outputs: maps, bivariate plots, ZIP regression tables in `analysis/output/`.
 
-- *2021-5-20: We updated the model architecture (FasterRCNN).*
+### 3. Anonymity Penalty
 
-### Detection and Road Network Data
+Compute the cost of avoiding surveillance when routing:
 
-| Size  | link         | md5 |
-| ----- | ----         | --- |
-| 97 Mb| [download](https://storage.googleapis.com/scpl-surveillance/camera-data.zip) | `6ceab577c53ba8dbe60b0ff1c8d5069a` |
+```bash
+python anonymity_penalty/anonymity_penalty.py --radius 50 --lam 500 --n_pairs 100
+```
+
+Outputs: `anonymity_penalty/routing_output/`
+
+---
+
+## Original Paper Analysis
+
+Reproduce figures from the original paper:
+
+```bash
+Rscript -e "rmarkdown::render('analysis/results.Rmd')"
+```
+
+Download [camera-data.zip](https://storage.googleapis.com/scpl-surveillance/camera-data.zip) (97 MB) into `data/`.
+
+---
+
+## Data & Artifacts
+
+| Resource | Size | Link |
+|----------|------|------|
+| Camera annotations | — | [meta.csv](https://storage.googleapis.com/scpl-surveillance/meta.csv) |
+| Pre-trained model | 472 MB | [model.zip](https://storage.googleapis.com/scpl-surveillance/model.zip) |
+| Detection + road data | 97 MB | [camera-data.zip](https://storage.googleapis.com/scpl-surveillance/camera-data.zip) |
+
+---
+
+## License
+
+See [LICENSE](LICENSE).

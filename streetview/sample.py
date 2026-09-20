@@ -85,29 +85,21 @@ def select_panoid(meta,
                     selection="closest",
                     seed=123):
     YEARS = ["2010<year<2016", "2016<=year"]
-    
-    # Set random seed
     np.random.seed(seed)
     random.seed(seed)
 
-    # Filter by distance
     meta = meta.query(f"distance < {distance}")
-    
-    # Filter by occurance for both pre and post
     meta_pre = meta.query(YEARS[0]).drop_duplicates(["lat_anchor", "lon_anchor"])
     meta_post = meta.query(YEARS[1]).drop_duplicates(["lat_anchor", "lon_anchor"])    
     meta_both = meta_pre.merge(meta_post, on=["lat_anchor", "lon_anchor"], how="inner")
     
-    # Sample anchor points 
     meta_sample = meta_both.drop_duplicates(['lat_anchor', 'lon_anchor']).sample(n, replace=False)
     lat_anchor_chosen = meta_sample.lat_anchor.unique()
     lon_anchor_chosen = meta_sample.lon_anchor.unique()
 
-    # Sample for pre and post
     meta_sub = meta[meta.lat_anchor.isin(lat_anchor_chosen)]
     meta_sub = meta_sub[meta_sub.lon_anchor.isin(lon_anchor_chosen)]
 
-    # Select panoid
     groups = []
     for years in YEARS:
         group = meta_sub.query(years)
@@ -119,7 +111,6 @@ def select_panoid(meta,
         group['year'] = group.year.apply(int)
         groups.append(group)
     
-    # Random select the orthogonal heading
     merged = groups[0].merge(groups[1], 
                              on=['lat_anchor', 'lon_anchor', 'u', 'v', 'key', 'heading', 'offset'], 
                              suffixes=("_pre", "_post"))
@@ -134,31 +125,23 @@ def select_panoid_recent(meta,
                     n=5000, 
                     distance=10,
                     seed=123):
-    
-    # Set random seed
     np.random.seed(seed)
     random.seed(seed)
 
-    # Filter by distance
     meta = meta.query(f"distance < {distance}")
     meta = meta.query(f"year >= {year}")
 
-    # Sample anchor points 
     meta_sample = meta.drop_duplicates(['id']).sample(n, replace=False)
     lat_anchor_chosen = meta_sample.lat_anchor.unique()
     lon_anchor_chosen = meta_sample.lon_anchor.unique()
 
-    # Sample for pre and post
     meta_sub = meta[meta.lat_anchor.isin(lat_anchor_chosen)]
     meta_sub = meta_sub[meta_sub.lon_anchor.isin(lon_anchor_chosen)]
 
-    # Select panoid
-
     meta = meta_sub.sort_values(['lat_anchor','lon_anchor', 'distance']) \
-                         .groupby(['lat_anchor','lon_anchor']) \
-                         .first().reset_index()     
+                   .groupby(['lat_anchor','lon_anchor']) \
+                   .first().reset_index()     
 
-    # Random select the orthogonal heading
     meta['road_heading'] = meta.heading
     meta['heading'] = (meta.heading + 360 + 90 - 180 * (np.random.rand(n) > 0.5)) % 360
     meta['heading'] = meta['heading'].apply(int)

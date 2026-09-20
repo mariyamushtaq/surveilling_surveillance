@@ -97,8 +97,8 @@ credentials.json
 *_google_api_key*
 *_API_KEY*
 
-# --- Sphinx / docs builds ---
-docs/_build/
+# --- Docs (local only) ---
+docs/
 
 # --- Project data-heavy artifacts (do not upload) ---
 # Raw downloaded imagery
@@ -126,6 +126,8 @@ data/roc_balanced_subset/surveillance/
 # ALPR pipeline outputs
 alpr_data/test_run/
 alpr_data/data/manual_tests/
+alpr_data/data/full_run/images/
+alpr_data/data/full_run/detections/
 alpr_data/threshold_analysis/images/
 alpr_data/threshold_analysis/detections/
 alpr_data/threshold_analysis/all_detections.csv
@@ -142,6 +144,7 @@ philly_surveillance_feb/
 # Local thesis / presentation (large binary)
 thesis_update_presentation.pptx
 Thesis_Presentation*.pptx
+surveillance_pipeline.pptx
 ~$*.pptx
 
 # --- Cleanup folder (local only) ---

@@ -36,18 +36,13 @@ from detectron2.data import transforms as T
 from detectron2.data import DatasetMapper
 
 
-# ── Metadata for visualization ───────────────────────────────────────────────
 META = Metadata()
 META.thing_classes = ["Directed Camera", "Dome Camera"]
 META.thing_colors = [[20, 200, 60], [11, 119, 32]]
 
 
-# ── Load model from Lightning checkpoint ─────────────────────────────────────
-
 def load_model(ckpt_path, device="cpu"):
     """Load the FasterRCNN model from a PyTorch Lightning checkpoint."""
-
-    # Build detectron2 FasterRCNN with 2 classes
     cfg = get_cfg()
     cfg.merge_from_file(
         model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml"))
@@ -56,11 +51,10 @@ def load_model(ckpt_path, device="cpu"):
     cfg.MODEL.DEVICE = device
     model = build_model(cfg)
 
-    # Extract detectron2 state dict from the Lightning checkpoint
     ckpt = torch.load(ckpt_path, map_location=device)
     state_dict = ckpt.get("state_dict", ckpt)
 
-    # Lightning wraps keys as "model.model.xxx" — strip the prefix
+    # Strip Lightning "model.model." prefix from state dict keys
     new_state = {}
     for k, v in state_dict.items():
         # model.model.backbone.xxx → backbone.xxx
@@ -77,8 +71,6 @@ def load_model(ckpt_path, device="cpu"):
     return model
 
 
-# ── Prepare a single image for detectron2 ────────────────────────────────────
-
 def prepare_image(image_path):
     """Load an image and return a detectron2-format input dict."""
     img = np.array(Image.open(image_path).convert("RGB"))
@@ -88,8 +80,6 @@ def prepare_image(image_path):
     return {"image": image_tensor, "height": h, "width": w,
             "file_name": image_path}
 
-
-# ── Run detection ────────────────────────────────────────────────────────────
 
 def run_detection(ckpt_path,
                   image_dir="data/rawdata/image_test",
@@ -122,16 +112,12 @@ def run_detection(ckpt_path,
         scores = instances.scores
         classes = instances.pred_classes
 
-        # Filter by confidence
         keep = scores > conf_threshold
-        boxes = boxes[keep]
-        scores = scores[keep]
-        classes = classes[keep]
+        boxes, scores, classes = boxes[keep], scores[keep], classes[keep]
 
         if len(scores) == 0:
             continue
 
-        # NMS
         keep_nms = torchvision.ops.nms(boxes, scores, iou_threshold)
         boxes = boxes[keep_nms]
         scores = scores[keep_nms]
@@ -139,7 +125,6 @@ def run_detection(ckpt_path,
 
         total_detections += len(scores)
 
-        # Save annotated image
         img_np = np.array(Image.open(img_path).convert("RGB"))
         filtered = Instances(img_np.shape[:2])
         filtered.pred_boxes = Boxes(boxes)
@@ -151,7 +136,6 @@ def run_detection(ckpt_path,
         annotated = Image.fromarray(out.get_image())
         annotated.save(os.path.join(output_dir, f"{basename}_det.jpg"))
 
-        # Save JSON results
         detections = []
         for j in range(len(scores)):
             det = {
